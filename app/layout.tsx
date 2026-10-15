@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   },
   description:
     "Discover one natural Chinese name shaped by sound, meaning, and the qualities you value—explained in clear English.",
+  verification: {
+    google: "e_Er5p_QeHZ-cs7e-0YQyTDt5E6xt5aZLuI1KB0ZlNw",
+  },
   openGraph: {
     title: "Named in Hanzi",
     description: "A Chinese name that feels like you.",
