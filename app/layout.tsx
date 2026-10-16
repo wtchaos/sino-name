@@ -1,8 +1,15 @@
 import type { Metadata, Viewport } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "@fontsource-variable/source-sans-3/wght.css";
 import "@fontsource/ma-shan-zheng/400.css";
 import "@fontsource/noto-serif-sc/600.css";
 import "./globals.css";
+
+const configuredAnalyticsId = process.env.GOOGLE_ANALYTICS_ID;
+const googleAnalyticsId =
+  configuredAnalyticsId && /^G-[A-Z0-9]+$/.test(configuredAnalyticsId)
+    ? configuredAnalyticsId
+    : null;
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -46,9 +53,15 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const analyticsEnabled =
+    process.env.NODE_ENV === "production" && googleAnalyticsId !== null;
+
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body>{children}</body>
+      {analyticsEnabled && googleAnalyticsId ? (
+        <GoogleAnalytics gaId={googleAnalyticsId} />
+      ) : null}
     </html>
   );
 }

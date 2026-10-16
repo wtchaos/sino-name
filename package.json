@@ -13,6 +13,7 @@
     "@fontsource-variable/source-sans-3": "^5.2.8",
     "@fontsource/ma-shan-zheng": "^5.3.1",
     "@fontsource/noto-serif-sc": "^5.2.8",
+    "@next/third-parties": "^16.4.2",
     "@upstash/redis": "^1.35.7",
     "lucide-react": "^0.468.0",
     "next": "^16.0.0",

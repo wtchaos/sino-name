@@ -42,6 +42,7 @@ Set these environment variables in Vercel:
 - `NEXT_PUBLIC_TURNSTILE_SITE_KEY`
 - `TURNSTILE_SECRET_KEY`
 - `NEXT_PUBLIC_SITE_URL`: the production origin, such as `https://example.com`
+- `GOOGLE_ANALYTICS_ID`: GA4 measurement ID; production only
 
 Set `ENABLE_DEMO_MODE=false` in production. Rate limits are disabled during local
 development and enforced automatically when `NODE_ENV=production`.

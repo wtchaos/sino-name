@@ -17,7 +17,7 @@ export default function PrivacyPage() {
         <header>
           <p>Privacy</p>
           <h1>Only the details needed to shape your name.</h1>
-          <p className="legal-updated">MVP privacy summary · October 15, 2026</p>
+          <p className="legal-updated">MVP privacy summary · October 16, 2026</p>
         </header>
 
         <section>
@@ -66,6 +66,17 @@ export default function PrivacyPage() {
             Name preferences and derived birth context are sent to the configured AI
             provider to create the result. The production implementation should link
             to the final provider terms and name the project operator before launch.
+          </p>
+        </section>
+
+        <section>
+          <h2>Analytics</h2>
+          <p>
+            In production, Google Analytics helps us understand aggregate visits,
+            page usage, and referral sources. Google may process browser, device,
+            interaction, and approximate location information and may use analytics
+            cookies or similar technologies. Analytics is not loaded during local
+            development.
           </p>
         </section>
       </main>
