@@ -1,6 +1,15 @@
-# Named in Hanzi
+# SinoName
 
 An English-first cultural naming experience that creates one natural Chinese name and explains its linguistic, poetic, and optional Daoist or Buddhist dimensions.
+
+## License
+
+Copyright © 2026 SinoName. All rights reserved. This is proprietary software;
+no permission is granted to use, copy, modify, distribute, host, deploy, or
+create derivative works from this project without prior written authorization.
+See [`LICENSE`](./LICENSE) for the complete terms. Third-party dependencies,
+fonts, and other separately licensed materials remain subject to their own
+licenses.
 
 ## Stack
 
@@ -34,7 +43,8 @@ Set these environment variables in Vercel:
 - `TURNSTILE_SECRET_KEY`
 - `NEXT_PUBLIC_SITE_URL`: the production origin, such as `https://example.com`
 
-Set `ENABLE_DEMO_MODE=false` and `ENFORCE_RATE_LIMITS=true` in production.
+Set `ENABLE_DEMO_MODE=false` in production. Rate limits are disabled during local
+development and enforced automatically when `NODE_ENV=production`.
 
 The API fails closed in production when Redis, Turnstile, the application secret, or DeepSeek is not configured. This prevents an apparently working deployment from silently losing abuse protection.
 

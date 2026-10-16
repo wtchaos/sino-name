@@ -1,7 +1,16 @@
 import type { ModelResult } from "@/lib/schema";
 import type { BirthContext, NameProfile } from "@/lib/types";
 
-const candidates = [
+type DemoCandidate = {
+  surname: string;
+  givenName: string;
+  pinyin: string;
+  pronunciation: string;
+  meaning: string;
+  chars: ReadonlyArray<readonly [string, string, string]>;
+};
+
+const threeCharacterCandidates: readonly DemoCandidate[] = [
   {
     surname: "林",
     givenName: "知远",
@@ -52,6 +61,53 @@ const candidates = [
   },
 ] as const;
 
+const twoCharacterCandidates: readonly DemoCandidate[] = [
+  {
+    surname: "林",
+    givenName: "安",
+    pinyin: "Lín Ān",
+    pronunciation: "leen ahn",
+    meaning: "A grounded calm with quiet vitality.",
+    chars: [
+      ["林", "forest", "growth and quiet vitality"],
+      ["安", "peace", "steadiness and ease"],
+    ],
+  },
+  {
+    surname: "沈",
+    givenName: "宁",
+    pinyin: "Shěn Níng",
+    pronunciation: "shen ning",
+    meaning: "Quiet depth joined with a peaceful spirit.",
+    chars: [
+      ["沈", "a traditional surname", "quiet depth and steadiness"],
+      ["宁", "peaceful", "composure and inner ease"],
+    ],
+  },
+  {
+    surname: "陈",
+    givenName: "朗",
+    pinyin: "Chén Lǎng",
+    pronunciation: "chen lahng",
+    meaning: "An open, bright spirit grounded in continuity.",
+    chars: [
+      ["陈", "a traditional surname", "continuity and groundedness"],
+      ["朗", "bright and open", "clarity and generosity"],
+    ],
+  },
+  {
+    surname: "许",
+    givenName: "和",
+    pinyin: "Xǔ Hé",
+    pronunciation: "shyoo huh",
+    meaning: "A gentle promise of harmony and warmth.",
+    chars: [
+      ["许", "a traditional surname", "trust and openness"],
+      ["和", "harmony", "balance and warmth"],
+    ],
+  },
+] as const;
+
 function stableIndex(profile: NameProfile) {
   return [...`${profile.firstName}${profile.familyName}`].reduce(
     (sum, char) => sum + char.codePointAt(0)!,
@@ -62,7 +118,12 @@ function stableIndex(profile: NameProfile) {
 export function createDemoResult(
   profile: NameProfile,
   birth: BirthContext,
+  targetFullNameLength: 2 | 3,
 ): ModelResult {
+  const candidates =
+    targetFullNameLength === 2
+      ? twoCharacterCandidates
+      : threeCharacterCandidates;
   const selected = candidates[stableIndex(profile) % candidates.length];
   const fullName = `${selected.surname}${selected.givenName}`;
   const qualities = profile.qualities
@@ -85,7 +146,7 @@ export function createDemoResult(
       literalMeaning,
       nameConnotation,
     })),
-    overallMeaning: `${fullName} brings together ${selected.chars[1][2]} and ${selected.chars[2][2]}. The result feels credible in modern Mandarin while retaining a quiet literary quality.`,
+    overallMeaning: `${fullName} brings together ${selected.chars.map((character) => character[2]).join(" and ")}. The result feels credible in modern Mandarin while retaining a quiet literary quality.`,
     personalization: `The name reflects the qualities you selected—${qualities}—without turning them into an overly literal label. Its tone stays close to the ${profile.namingStyle.replaceAll("_", " ")} style you chose.`,
     poeticInterpretation: {
       text: `Imagine a clear path extending beyond a quiet grove: grounded in the present, yet open to a wider horizon. This is an original interpretation written for your name.`,

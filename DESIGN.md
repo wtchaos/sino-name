@@ -1,5 +1,5 @@
 ---
-name: Named in Hanzi
+name: SinoName
 description: A Chinese name that feels like you.
 colors:
   oxblood: "oklch(0.450 0.150 20)"
@@ -105,13 +105,13 @@ components:
 
 <!-- SEED -->
 
-# Design System: Named in Hanzi
+# Design System: SinoName
 
 ## 1. Overview
 
 **Creative North Star: “A single lacquer seal under white museum light.”**
 
-Named in Hanzi should feel like a contemporary cultural gallery: calm enough to let one name command attention, precise enough to earn trust, and warm enough to make cultural discovery personal. The physical metaphor is one carefully presented object with a clear bilingual museum label—not an antique shop full of symbols.
+SinoName should feel like a contemporary cultural gallery: calm enough to let one name command attention, precise enough to earn trust, and warm enough to make cultural discovery personal. The physical metaphor is one carefully presented object with a clear bilingual museum label—not an antique shop full of symbols.
 
 The interface uses pure white space, warm near-black text, and a controlled oxblood accent. Chinese characters are the most expressive visual material in the product. The surrounding interface stays familiar and quiet so users can move through the naming flow without decoding ornamental controls.
 
@@ -219,7 +219,7 @@ The system is flat by default. Hierarchy comes from spacing, tonal surfaces, typ
 
 ### Name Card
 
-- The exported card includes the full Chinese name, pinyin, one-line meaning, and a small Named in Hanzi signature. It excludes controls, scores, birth data, and religious interpretation so it remains personal and shareable.
+- The exported card includes the full Chinese name, pinyin, one-line meaning, and a small SinoName signature. It excludes controls, scores, birth data, and religious interpretation so it remains personal and shareable.
 
 ## 6. Do's and Don'ts
 

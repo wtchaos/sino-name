@@ -18,6 +18,7 @@ declare global {
         },
       ) => string;
       remove: (widgetId: string) => void;
+      reset: (widgetId: string) => void;
     };
   }
 }
@@ -31,6 +32,8 @@ export function Turnstile({
 }) {
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
   const containerRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | undefined>(undefined);
+  const previousResetKey = useRef(resetKey);
 
   useEffect(() => {
     if (!siteKey) {
@@ -38,11 +41,11 @@ export function Turnstile({
       return;
     }
 
-    let widgetId: string | undefined;
+    let interval: number | undefined;
     const render = () => {
       if (!containerRef.current || !window.turnstile) return false;
-      containerRef.current.innerHTML = "";
-      widgetId = window.turnstile.render(containerRef.current, {
+      if (widgetIdRef.current) return true;
+      widgetIdRef.current = window.turnstile.render(containerRef.current, {
         sitekey: siteKey,
         action: "generate_name",
         appearance: "interaction-only",
@@ -54,15 +57,29 @@ export function Turnstile({
     };
 
     if (!render()) {
-      const interval = window.setInterval(() => {
-        if (render()) window.clearInterval(interval);
+      interval = window.setInterval(() => {
+        if (render() && interval !== undefined) {
+          window.clearInterval(interval);
+          interval = undefined;
+        }
       }, 100);
-      return () => window.clearInterval(interval);
     }
     return () => {
-      if (widgetId && window.turnstile) window.turnstile.remove(widgetId);
+      if (interval !== undefined) window.clearInterval(interval);
+      const widgetId = widgetIdRef.current;
+      widgetIdRef.current = undefined;
+      if (widgetId && window.turnstile) {
+        window.turnstile.remove(widgetId);
+      }
     };
-  }, [onToken, resetKey, siteKey]);
+  }, [onToken, siteKey]);
+
+  useEffect(() => {
+    if (resetKey === previousResetKey.current) return;
+    previousResetKey.current = resetKey;
+    const widgetId = widgetIdRef.current;
+    if (widgetId && window.turnstile) window.turnstile.reset(widgetId);
+  }, [resetKey]);
 
   return (
     <>

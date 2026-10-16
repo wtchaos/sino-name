@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "@fontsource-variable/source-sans-3/wght.css";
+import "@fontsource/ma-shan-zheng/400.css";
 import "@fontsource/noto-serif-sc/600.css";
 import "./globals.css";
 
@@ -8,18 +9,32 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   ),
   title: {
-    default: "Named in Hanzi — A Chinese name that feels like you",
-    template: "%s — Named in Hanzi",
+    default: "Chinese Name Generator with Meaning | SinoName",
+    template: "%s | SinoName",
   },
   description:
-    "Discover one natural Chinese name shaped by sound, meaning, and the qualities you value—explained in clear English.",
+    "Create a natural Chinese name shaped by your name and values. Explore its pronunciation, character meanings, poetic imagery, and cultural context in English.",
+  applicationName: "SinoName",
+  alternates: {
+    canonical: "/",
+  },
   verification: {
     google: "0wDIbMVw2vzXZ2wYVIU_v8hPZyzhxwQe8k9aL-GJ29E",
   },
   openGraph: {
-    title: "Named in Hanzi",
-    description: "A Chinese name that feels like you.",
+    title: "Chinese Name Generator with Meaning | SinoName",
+    description:
+      "Create one natural, personalized Chinese name and discover its pronunciation, character meanings, poetic imagery, and cultural context.",
+    url: "/",
+    siteName: "SinoName",
+    locale: "en_US",
     type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Chinese Name Generator with Meaning | SinoName",
+    description:
+      "Create one natural Chinese name with pronunciation, character meanings, poetic imagery, and cultural context.",
   },
   robots: { index: true, follow: true },
 };

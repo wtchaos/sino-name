@@ -6,16 +6,17 @@ import { SealMark } from "@/components/SealMark";
 export const metadata: Metadata = {
   title: "Create your Chinese name",
   description:
-    "Choose the qualities and cultural perspectives that will shape your Chinese name.",
+    "Create a personalized Chinese name in about two minutes. Receive its pronunciation, character meanings, poetic imagery, and cultural interpretation.",
+  alternates: { canonical: "/create" },
 };
 
 export default function CreatePage() {
   return (
     <main className="create-page">
       <header className="create-header shell">
-        <Link className="wordmark" href="/" aria-label="Named in Hanzi home">
+        <Link className="wordmark" href="/" aria-label="SinoName home">
           <SealMark className="wordmark-mark" decorative />
-          <span>Named in Hanzi</span>
+          <span>SinoName</span>
         </Link>
         <p>One natural name, thoughtfully chosen.</p>
       </header>

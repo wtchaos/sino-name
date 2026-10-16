@@ -1,6 +1,6 @@
 # Product
 
-Working brand name: **Named in Hanzi**. Treat this as provisional until domain, search-conflict, and trademark checks are completed before launch.
+Brand name: **SinoName**. Confirm domain, search-conflict, and trademark availability before launch.
 
 ## Register
 

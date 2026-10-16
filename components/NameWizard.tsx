@@ -1,6 +1,12 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, Check, LoaderCircle } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  ChevronDown,
+  LoaderCircle,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FormEvent, useCallback, useRef, useState } from "react";
 import { BirthDatePicker } from "@/components/BirthDatePicker";
@@ -74,6 +80,11 @@ export function NameWizard() {
   const [turnstileToken, setTurnstileToken] = useState("");
   const [challengeKey, setChallengeKey] = useState(0);
   const handleToken = useCallback((token: string) => setTurnstileToken(token), []);
+  const verificationPending =
+    step === 3 &&
+    Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) &&
+    !turnstileToken &&
+    !submitting;
 
   function update<K extends keyof NameProfile>(key: K, value: NameProfile[K]) {
     setProfile((current) => ({ ...current, [key]: value }));
@@ -270,21 +281,24 @@ export function NameWizard() {
             </div>
             <label className="field">
               <span>Time of birth</span>
-              <select
-                value={profile.birthTimePeriod}
-                onChange={(event) =>
-                  update(
-                    "birthTimePeriod",
-                    event.target.value as NameProfile["birthTimePeriod"],
-                  )
-                }
-              >
-                <option value="unknown">I don’t know</option>
-                <option value="morning">Morning</option>
-                <option value="afternoon">Afternoon</option>
-                <option value="evening">Evening</option>
-                <option value="late_night">Late night</option>
-              </select>
+              <span className="select-control">
+                <select
+                  value={profile.birthTimePeriod}
+                  onChange={(event) =>
+                    update(
+                      "birthTimePeriod",
+                      event.target.value as NameProfile["birthTimePeriod"],
+                    )
+                  }
+                >
+                  <option value="unknown">I don’t know</option>
+                  <option value="morning">Morning</option>
+                  <option value="afternoon">Afternoon</option>
+                  <option value="evening">Evening</option>
+                  <option value="late_night">Late night</option>
+                </select>
+                <ChevronDown aria-hidden size={18} />
+              </span>
               <small>Optional. A broad time period is enough.</small>
             </label>
           </div>
@@ -436,7 +450,8 @@ export function NameWizard() {
         <button
           type="button"
           className={`button button-primary${step === 3 ? " button-large" : ""}`}
-          disabled={submitting}
+          disabled={submitting || verificationPending}
+          aria-busy={step === 3 && (submitting || verificationPending)}
           onClick={() => {
             if (step < 3) {
               moveTo(step + 1);
@@ -449,6 +464,11 @@ export function NameWizard() {
             <>
               <LoaderCircle className="spin" aria-hidden size={19} />
               Creating and checking your name…
+            </>
+          ) : verificationPending ? (
+            <>
+              <LoaderCircle className="spin" aria-hidden size={19} />
+              Securing your request…
             </>
           ) : step === 3 ? (
             <>

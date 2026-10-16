@@ -4,7 +4,9 @@ import { Header } from "@/components/Header";
 
 export const metadata: Metadata = {
   title: "Privacy",
-  description: "How Named in Hanzi handles the details used to create your name.",
+  description:
+    "Learn what information SinoName uses to create your Chinese name, how long results are retained, and how anonymous abuse protection works.",
+  alternates: { canonical: "/privacy" },
 };
 
 export default function PrivacyPage() {

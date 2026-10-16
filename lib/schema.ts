@@ -63,9 +63,9 @@ const characterSchema = z.object({
 });
 
 export const modelResultSchema = z.object({
-  surname: z.string().min(1).max(2),
-  givenName: z.string().min(2).max(4),
-  fullName: z.string().min(3).max(6),
+  surname: z.string().length(1),
+  givenName: z.string().min(1).max(2),
+  fullName: z.string().min(2).max(3),
   pinyin: z.string().min(3).max(100),
   pronunciation: z.string().min(3).max(100),
   oneLineMeaning: z.string().min(10).max(220),
@@ -73,7 +73,7 @@ export const modelResultSchema = z.object({
     type: z.enum(["sound", "meaning", "harmony"]),
     explanation: z.string().min(10).max(320),
   }),
-  characters: z.array(characterSchema).length(3),
+  characters: z.array(characterSchema).min(2).max(3),
   overallMeaning: z.string().min(20).max(600),
   personalization: z.string().min(20).max(600),
   poeticInterpretation: z.object({

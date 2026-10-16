@@ -29,9 +29,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = ticketRequestSchema.parse(await request.json());
     const ipKey = hashIp(getClientIp(request));
-    const enforce =
-      process.env.NODE_ENV === "production" ||
-      process.env.ENFORCE_RATE_LIMITS === "true";
+    const enforce = process.env.NODE_ENV === "production";
 
     if (enforce && (await getCount(`ticket:${ipKey}:10m`)) >= 10) {
       return NextResponse.json(

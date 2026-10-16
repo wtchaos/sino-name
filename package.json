@@ -1,7 +1,8 @@
 {
-  "name": "named-in-hanzi",
+  "name": "sino-name",
   "version": "0.1.0",
   "private": true,
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,6 +11,7 @@
   },
   "dependencies": {
     "@fontsource-variable/source-sans-3": "^5.2.8",
+    "@fontsource/ma-shan-zheng": "^5.3.1",
     "@fontsource/noto-serif-sc": "^5.2.8",
     "@upstash/redis": "^1.35.7",
     "lucide-react": "^0.468.0",

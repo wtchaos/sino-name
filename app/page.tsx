@@ -40,7 +40,7 @@ export default function HomePage() {
           <div
             className="name-specimen"
             aria-label="Example Chinese name"
-            data-reveal="scale"
+            data-hero-specimen
           >
             <SealMark
               className="specimen-seal"

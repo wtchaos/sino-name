@@ -8,7 +8,7 @@ export function Footer() {
         <div>
           <div className="footer-brand">
             <SealMark className="footer-mark" decorative />
-            <strong>Named in Hanzi</strong>
+            <strong>SinoName</strong>
           </div>
           <p>A Chinese name that feels like you.</p>
         </div>

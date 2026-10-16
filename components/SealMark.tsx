@@ -15,7 +15,7 @@ export function SealMark({
       viewBox="0 0 100 100"
       role={decorative ? undefined : "img"}
       aria-hidden={decorative || undefined}
-      aria-label={decorative ? undefined : "Named in Hanzi seal mark"}
+      aria-label={decorative ? undefined : "SinoName seal mark"}
       fill="none"
       {...props}
     >

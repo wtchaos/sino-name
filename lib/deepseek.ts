@@ -2,6 +2,7 @@ import { buildBirthContext } from "@/lib/birth";
 import { createDemoResult } from "@/lib/demo";
 import { modelResultSchema, type ModelResult } from "@/lib/schema";
 import type { NameProfile } from "@/lib/types";
+import { ZodError } from "zod";
 
 const systemPrompt = `You are a cross-cultural Chinese naming specialist.
 
@@ -18,7 +19,8 @@ Follow this priority order strictly:
 
 NAMING RULES
 - Use Simplified Chinese characters.
-- Use one common Chinese surname and a two-character given name.
+- Use one common one-character Chinese surname.
+- Obey target_full_name_length exactly. A two-character full name has a one-character given name; a three-character full name has a two-character given name.
 - Prefer familiar, readable characters.
 - Avoid rare, variant, polyphonic, difficult, or easily misread characters.
 - Avoid names resembling fictional characters, online aliases, commercial brands, political figures, or religious titles.
@@ -50,20 +52,97 @@ surnameConnection, characters, overallMeaning, personalization,
 poeticInterpretation, birthInspiration, daoistPerspective,
 buddhistPerspective, practicalReview, scores, riskFlags.
 
+OUTPUT CONTRACT
+Return exactly this JSON structure. Do not replace objects or arrays with prose strings.
+{
+  "surname": "one common Chinese surname character",
+  "givenName": "exactly target_given_name_length Chinese characters",
+  "fullName": "surname followed by givenName, exactly target_full_name_length Chinese characters",
+  "pinyin": "full Hanyu Pinyin with tone marks",
+  "pronunciation": "clear English pronunciation guidance",
+  "oneLineMeaning": "a concise English summary",
+  "surnameConnection": {
+    "type": "sound | meaning | harmony",
+    "explanation": "English explanation"
+  },
+  "characters": [
+    {
+      "character": "the surname character",
+      "literalMeaning": "English literal meaning or origin",
+      "nameConnotation": "English explanation of its role in the name"
+    },
+    {
+      "character": "a given-name character",
+      "literalMeaning": "English literal meaning",
+      "nameConnotation": "English name connotation"
+    }
+  ],
+  "overallMeaning": "English explanation",
+  "personalization": "English explanation tied to the supplied preferences",
+  "poeticInterpretation": {
+    "text": "an original English poetic interpretation",
+    "sourceType": "original_interpretation",
+    "sourceId": null
+  },
+  "birthInspiration": "seasonal English interpretation without fortune-telling",
+  "daoistPerspective": "English interpretation when requested, otherwise null",
+  "buddhistPerspective": "English interpretation when requested, otherwise null",
+  "practicalReview": {
+    "genderExpression": "English description",
+    "usageStyle": "English description",
+    "pronunciationDifficulty": "easy | moderate",
+    "commonness": "English description",
+    "homophoneRisk": "none_detected | low"
+  },
+  "scores": {
+    "naturalness": 24-30,
+    "soundHarmony": 0-15,
+    "semanticCoherence": 0-15,
+    "preferenceFit": 0-15,
+    "homophoneSafety": 8-10,
+    "pronunciation": 0-10,
+    "culturalPotential": 0-5,
+    "total": "integer sum of the seven scores, from 82 to 100"
+  },
+  "riskFlags": ["short English notes only when needed"]
+}
+
+The characters array must contain exactly target_full_name_length objects in the same order as fullName. Include a second given-name object only when target_full_name_length is 3.
+Every field shown above is required. Use null only for the two unrequested perspectives and sourceId.
+
 Scoring maxima are: naturalness 30, soundHarmony 15,
 semanticCoherence 15, preferenceFit 15, homophoneSafety 10,
 pronunciation 10, culturalPotential 5. total must equal the sum and be at least 82.`;
 
-function validateChineseName(result: ModelResult): ModelResult {
+function retryFeedback(error: unknown): string {
+  if (error instanceof ZodError) {
+    return error.issues
+      .slice(0, 12)
+      .map((issue) => `${issue.path.join(".") || "response"}: ${issue.message}`)
+      .join("; ");
+  }
+  if (error instanceof SyntaxError) return "The response was not valid JSON.";
+  if (error instanceof Error) return error.message.slice(0, 600);
+  return "The response did not match the required output contract.";
+}
+
+function validateChineseName(
+  result: ModelResult,
+  targetFullNameLength: 2 | 3,
+): ModelResult {
   const chars = Array.from(result.fullName);
+  const givenNameChars = Array.from(result.givenName);
   const forbidden = /[佛仙鬼魔皇帝死病财运命]/u;
   const commonSurnames = new Set(
     Array.from("赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶姜戚谢邹喻柏水窦章云苏潘葛奚范彭郎鲁韦昌马苗凤花方俞任袁柳鲍史唐费廉岑薛雷贺倪汤滕殷罗毕郝邬安常乐于时傅皮卞齐康伍余元卜顾孟平黄和穆萧尹姚邵湛汪祁毛禹狄米贝明臧计伏成戴谈宋茅庞熊纪舒屈项祝董梁杜阮蓝闵席季麻强贾路娄危江童颜郭梅盛林刁钟徐邱骆高夏蔡田樊胡凌霍虞万柯管卢莫房裘缪解应宗丁宣邓郁单杭洪包诸左石崔吉龚程邢裴陆荣翁荀羊惠甄曲封芮储靳汲邴糜松井富乌焦巴弓牧隗山谷车侯宓蓬全班仰秋仲伊宫宁仇栾暴甘厉戎祖武符刘景詹龙叶司黎乔苍双闻莘党翟谭贡劳逄姬申扶堵冉宰郦雍却璩桑桂濮牛寿通边扈燕冀郏浦尚农温别庄晏柴瞿阎充慕连茹习艾鱼容向古易慎戈廖庾终暨居衡步都耿满弘匡国文寇广禄阙东欧沃利蔚越夔隆师巩厍聂晁勾敖融冷訾辛阚那简饶空曾毋沙乜养鞠须丰巢关蒯相查荆红游竺权逯盖益桓公"),
   );
 
   if (
-    chars.length !== 3 ||
+    chars.length !== targetFullNameLength ||
+    givenNameChars.length !== targetFullNameLength - 1 ||
     result.fullName !== `${result.surname}${result.givenName}` ||
+    result.characters.length !== targetFullNameLength ||
+    result.characters.map((item) => item.character).join("") !== result.fullName ||
     !commonSurnames.has(result.surname) ||
     forbidden.test(result.fullName) ||
     !result.characters.every((item) => /^[\u3400-\u9fff]$/u.test(item.character))
@@ -82,8 +161,10 @@ function validateChineseName(result: ModelResult): ModelResult {
 
 async function callDeepSeek(
   profile: NameProfile,
+  targetFullNameLength: 2 | 3,
   attempt: number,
   userId: string,
+  previousError?: string,
 ): Promise<ModelResult> {
   const apiKey = process.env.DEEPSEEK_API_KEY;
   if (!apiKey) throw new Error("DEEPSEEK_API_KEY is not configured.");
@@ -93,6 +174,8 @@ async function callDeepSeek(
     profile.birthTimePeriod,
   );
   const userPayload = {
+    target_full_name_length: targetFullNameLength,
+    target_given_name_length: targetFullNameLength - 1,
     user_profile: {
       firstName: profile.firstName,
       familyName: profile.familyName,
@@ -111,7 +194,7 @@ async function callDeepSeek(
     retry_instruction:
       attempt === 0
         ? null
-        : "The previous response failed schema or application validation. Return a different, conservative name using common characters and verify every field.",
+        : `The previous response failed validation: ${previousError ?? "unknown validation error"}. Return a corrected, conservative result and verify every field against the output contract.`,
   };
 
   const controller = new AbortController();
@@ -132,6 +215,7 @@ async function callDeepSeek(
             { role: "user", content: JSON.stringify(userPayload) },
           ],
           response_format: { type: "json_object" },
+          thinking: { type: "disabled" },
           user_id: userId,
           max_tokens: 1800,
           temperature: 0.65,
@@ -145,12 +229,24 @@ async function callDeepSeek(
       throw new Error(`DeepSeek returned HTTP ${response.status}.`);
     }
     const data = (await response.json()) as {
-      choices?: Array<{ message?: { content?: string | null } }>;
+      choices?: Array<{
+        finish_reason?: string | null;
+        message?: { content?: string | null };
+      }>;
+      usage?: {
+        completion_tokens?: number;
+        completion_tokens_details?: { reasoning_tokens?: number };
+      };
     };
-    const content = data.choices?.[0]?.message?.content;
-    if (!content) throw new Error("DeepSeek returned an empty response.");
+    const choice = data.choices?.[0];
+    const content = choice?.message?.content;
+    if (!content) {
+      throw new Error(
+        `DeepSeek returned no final content (finish_reason=${choice?.finish_reason ?? "unknown"}, completion_tokens=${data.usage?.completion_tokens ?? "unknown"}, reasoning_tokens=${data.usage?.completion_tokens_details?.reasoning_tokens ?? "unknown"}).`,
+      );
+    }
     const parsed = modelResultSchema.parse(JSON.parse(content));
-    return validateChineseName(parsed);
+    return validateChineseName(parsed, targetFullNameLength);
   } finally {
     clearTimeout(timeout);
   }
@@ -160,6 +256,8 @@ export async function generateName(
   profile: NameProfile,
   userId: string,
 ): Promise<ModelResult> {
+  const targetFullNameLength: 2 | 3 = Math.random() < 0.5 ? 2 : 3;
+
   if (
     !process.env.DEEPSEEK_API_KEY &&
     process.env.ENABLE_DEMO_MODE !== "false" &&
@@ -168,16 +266,23 @@ export async function generateName(
     return createDemoResult(
       profile,
       buildBirthContext(profile.birthDate, profile.birthTimePeriod),
+      targetFullNameLength,
     );
   }
 
   try {
-    return await callDeepSeek(profile, 0, userId);
+    return await callDeepSeek(profile, targetFullNameLength, 0, userId);
   } catch (firstError) {
     try {
-      return await callDeepSeek(profile, 1, userId);
-    } catch {
-      throw firstError;
+      return await callDeepSeek(
+        profile,
+        targetFullNameLength,
+        1,
+        userId,
+        retryFeedback(firstError),
+      );
+    } catch (secondError) {
+      throw secondError;
     }
   }
 }

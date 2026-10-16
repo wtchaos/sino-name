@@ -7,7 +7,8 @@ import { Header } from "@/components/Header";
 export const metadata: Metadata = {
   title: "Our naming method",
   description:
-    "How Named in Hanzi balances natural Chinese usage, meaning, pronunciation, and cultural interpretation.",
+    "Learn how SinoName chooses natural Chinese names by balancing surname, pronunciation, character meaning, modern usage, and cultural context.",
+  alternates: { canonical: "/methodology" },
 };
 
 export default function MethodologyPage() {

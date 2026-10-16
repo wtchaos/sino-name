@@ -73,9 +73,7 @@ export async function POST(request: NextRequest) {
 
     const ip = getClientIp(request);
     const ipKey = hashIp(ip);
-    const enforce =
-      process.env.NODE_ENV === "production" ||
-      process.env.ENFORCE_RATE_LIMITS === "true";
+    const enforce = process.env.NODE_ENV === "production";
 
     if (enforce) {
       const [visitorDaily, ipHourly, ipDaily] = await Promise.all([
@@ -120,7 +118,14 @@ export async function POST(request: NextRequest) {
             incrementCount(`ip:${ipKey}:day`, DAY),
           ]);
         }
-        return NextResponse.json({ result: cached, cached: true });
+        return NextResponse.json({
+          result: {
+            ...cached,
+            originalFirstName: body.profile.firstName,
+            originalFamilyName: body.profile.familyName,
+          },
+          cached: true,
+        });
       }
 
       const generated = await generateName(body.profile, visitorId);
@@ -130,6 +135,7 @@ export async function POST(request: NextRequest) {
         createdAt: now.toISOString(),
         expiresAt: new Date(now.getTime() + 30 * DAY * 1000).toISOString(),
         originalFirstName: body.profile.firstName,
+        originalFamilyName: body.profile.familyName,
         ...generated,
       };
 

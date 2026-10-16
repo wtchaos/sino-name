@@ -62,6 +62,7 @@ export type NameResult = {
   createdAt: string;
   expiresAt: string;
   originalFirstName: string;
+  originalFamilyName?: string;
   surname: string;
   givenName: string;
   fullName: string;
