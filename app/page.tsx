@@ -1,3 +1,4 @@
+import { CreateNameLink } from "@/components/CreateNameLink";
 import { ArrowRight, BookOpen, Check, Languages, Volume2 } from "lucide-react";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
@@ -30,9 +31,9 @@ export default function HomePage() {
               every layer in clear English.
             </p>
             <div className="hero-actions" data-hero-detail>
-              <Link className="button button-primary button-large" href="/create">
+              <CreateNameLink className="button button-primary button-large">
                 Create My Chinese Name <ArrowRight aria-hidden size={19} />
-              </Link>
+              </CreateNameLink>
               <p>Free · No account required · About 2 minutes</p>
             </div>
           </div>
@@ -78,21 +79,12 @@ export default function HomePage() {
         </section>
 
         <section className="culture-ribbon" aria-label="Elements of a Chinese name">
-          <div className="culture-ribbon-track" data-scroll-track>
-            <div>
-              <span>Sound</span><b lang="zh-Hans">声</b>
-              <span>Meaning</span><b lang="zh-Hans">意</b>
-              <span>Rhythm</span><b lang="zh-Hans">韵</b>
-              <span>Character</span><b lang="zh-Hans">字</b>
-              <span>Harmony</span><b lang="zh-Hans">和</b>
-            </div>
-            <div aria-hidden="true">
-              <span>Sound</span><b lang="zh-Hans">声</b>
-              <span>Meaning</span><b lang="zh-Hans">意</b>
-              <span>Rhythm</span><b lang="zh-Hans">韵</b>
-              <span>Character</span><b lang="zh-Hans">字</b>
-              <span>Harmony</span><b lang="zh-Hans">和</b>
-            </div>
+          <div className="culture-ribbon-track shell">
+            <div><span>Sound</span><b lang="zh-Hans">声</b></div>
+            <div><span>Meaning</span><b lang="zh-Hans">意</b></div>
+            <div><span>Rhythm</span><b lang="zh-Hans">韵</b></div>
+            <div><span>Character</span><b lang="zh-Hans">字</b></div>
+            <div><span>Harmony</span><b lang="zh-Hans">和</b></div>
           </div>
         </section>
 
@@ -214,9 +206,9 @@ export default function HomePage() {
             <h2>Your Chinese name is waiting to be understood.</h2>
             <p>One complete name · Free to create · No account required</p>
           </div>
-          <Link className="button button-primary button-large" href="/create">
+          <CreateNameLink className="button button-primary button-large">
             Create My Chinese Name <ArrowRight aria-hidden size={19} />
-          </Link>
+          </CreateNameLink>
         </section>
       </main>
       <Footer />

@@ -1,6 +1,6 @@
+import { CreateNameLink } from "@/components/CreateNameLink";
 import type { Metadata } from "next";
 import { ArrowRight, Check, X } from "lucide-react";
-import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 
@@ -89,9 +89,9 @@ export default function MethodologyPage() {
         <section className="content-cta shell">
           <h2>Ready to meet your name?</h2>
           <p>One complete result, explained in clear English.</p>
-          <Link className="button button-primary button-large" href="/create">
+          <CreateNameLink className="button button-primary button-large">
             Create My Chinese Name <ArrowRight aria-hidden size={18} />
-          </Link>
+          </CreateNameLink>
         </section>
       </main>
       <Footer />

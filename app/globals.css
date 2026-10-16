@@ -468,16 +468,19 @@ p {
 }
 
 .culture-ribbon-track {
-  width: max-content;
   display: flex;
-  transform: translate3d(calc(-8vw + var(--ribbon-shift, 0px)), 0, 0);
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 clamp(1.5rem, 3vw, 3.5rem);
 }
 
 .culture-ribbon-track > div {
   display: flex;
   align-items: center;
-  gap: clamp(1.5rem, 3vw, 3.5rem);
-  padding: 1.15rem clamp(1.5rem, 3vw, 3.5rem);
+  justify-content: center;
+  flex: 1 1 140px;
+  gap: clamp(0.75rem, 1.5vw, 1.5rem);
+  padding-block: 1.15rem;
   white-space: nowrap;
 }
 

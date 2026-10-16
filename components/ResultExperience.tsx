@@ -1,5 +1,7 @@
 "use client";
 
+import { CreateNameLink } from "@/components/CreateNameLink";
+
 import {
   ArrowRight,
   BookOpen,
@@ -16,6 +18,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { SealMark } from "@/components/SealMark";
 import type { NameResult } from "@/lib/types";
+import { readCachedResults, saveCachedResult } from "@/lib/result-cache";
 
 type ResultState =
   | { status: "loading" }
@@ -28,17 +31,10 @@ export function ResultExperience({ id }: { id: string }) {
 
   useEffect(() => {
     let active = true;
-    const local = localStorage.getItem(`nih:result:${id}`);
+    const local = readCachedResults().find((result) => result.id === id);
     if (local) {
-      try {
-        const result = JSON.parse(local) as NameResult;
-        setState({ status: "ready", result });
-        return () => {
-          active = false;
-        };
-      } catch {
-        localStorage.removeItem(`nih:result:${id}`);
-      }
+      setState({ status: "ready", result: local });
+      return () => { active = false; };
     }
 
     fetch(`/api/results/${id}`)
@@ -48,7 +44,8 @@ export function ResultExperience({ id }: { id: string }) {
       })
       .then(({ result }) => {
         if (!active) return;
-        localStorage.setItem(`nih:result:${id}`, JSON.stringify(result));
+        if (Date.parse(result.expiresAt) <= Date.now()) throw new Error("expired");
+        saveCachedResult(result);
         setState({ status: "ready", result });
       })
       .catch(() => {
@@ -132,9 +129,9 @@ export function ResultExperience({ id }: { id: string }) {
           Results are kept for 30 days. If you created this name on another
           device, open its original share link there.
         </p>
-        <Link className="button button-primary" href="/create">
+        <CreateNameLink className="button button-primary">
           Create a Chinese name <ArrowRight aria-hidden size={18} />
-        </Link>
+        </CreateNameLink>
       </main>
     );
   }

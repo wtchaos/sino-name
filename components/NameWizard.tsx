@@ -10,6 +10,8 @@ import {
 import { useRouter } from "next/navigation";
 import { FormEvent, useCallback, useRef, useState } from "react";
 import { BirthDatePicker } from "@/components/BirthDatePicker";
+import { saveCachedResult } from "@/lib/result-cache";
+import type { NameResult } from "@/lib/types";
 import { Turnstile } from "@/components/Turnstile";
 import {
   namingStyles,
@@ -167,17 +169,13 @@ export function NameWizard() {
         }),
       });
       const generationBody = (await generationResponse.json()) as ApiError & {
-        result?: { id: string };
+        result?: NameResult;
       };
       if (!generationResponse.ok || !generationBody.result) {
         throw new Error(generationBody.error ?? "We couldn’t create your name.");
       }
 
-      localStorage.setItem(
-        `nih:result:${generationBody.result.id}`,
-        JSON.stringify(generationBody.result),
-      );
-      localStorage.setItem("nih:last-result", generationBody.result.id);
+      saveCachedResult(generationBody.result);
       router.push(`/result/${generationBody.result.id}`);
     } catch (caught) {
       setError(

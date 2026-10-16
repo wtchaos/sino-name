@@ -88,3 +88,17 @@ npm run build
 ```
 
 `PRODUCT.md` records the strategic decisions. `DESIGN.md` and `.impeccable/design.json` contain the visual system and component rules.
+
+## Clear development history
+
+With the development server running, execute `npm run clear`. This opens
+`http://localhost:3000/dev/clear` in your default browser, removes this site's
+cached name results and latest-result pointer, then opens `/create`.
+There is no reset control in the product interface.
+
+For another port or local hostname, use `npm run clear -- http://localhost:3001`.
+Use the same hostname, browser, and profile in which you created the result;
+if necessary, copy the URL printed by the command into that browser.
+Only local browser result history is removed; server caches and rate limits
+remain unchanged. The cleanup route returns 404 outside development, and the
+command refuses to run with `NODE_ENV=production`.

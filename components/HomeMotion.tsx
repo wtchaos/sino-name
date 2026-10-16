@@ -212,9 +212,6 @@ export function HomeMotion() {
     const scrollProgress = document.querySelector<HTMLElement>(
       ".scroll-progress > span",
     );
-    const ribbonTrack = document.querySelector<HTMLElement>(
-      "[data-scroll-track]",
-    );
     let frame = 0;
     const updateParallax = () => {
       let needsAnotherFrame = false;
@@ -255,12 +252,6 @@ export function HomeMotion() {
       const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
       if (scrollProgress) {
         scrollProgress.style.transform = `scaleX(${Math.max(0, Math.min(1, progress))})`;
-      }
-      if (ribbonTrack) {
-        ribbonTrack.style.setProperty(
-          "--ribbon-shift",
-          `${(-window.scrollY * 0.2).toFixed(2)}px`,
-        );
       }
       if (needsAnotherFrame) {
         frame = window.requestAnimationFrame(updateParallax);

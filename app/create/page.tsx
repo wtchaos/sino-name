@@ -1,3 +1,4 @@
+import { CreatePageGuard } from "@/components/CreatePageGuard";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { NameWizard } from "@/components/NameWizard";
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 
 export default function CreatePage() {
   return (
+    <CreatePageGuard>
     <main className="create-page">
       <header className="create-header shell">
         <Link className="wordmark" href="/" aria-label="SinoName home">
@@ -33,5 +35,6 @@ export default function CreatePage() {
         <NameWizard />
       </div>
     </main>
+    </CreatePageGuard>
   );
 }

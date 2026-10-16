@@ -1,3 +1,4 @@
+import { CreateNameLink } from "@/components/CreateNameLink";
 import Link from "next/link";
 import { SealMark } from "@/components/SealMark";
 
@@ -14,9 +15,9 @@ export function Header() {
           <Link href="/methodology">Our Method</Link>
           <Link href="/methodology#about-names">About Chinese Names</Link>
         </nav>
-        <Link className="button button-primary header-cta" href="/create">
+        <CreateNameLink className="button button-primary header-cta">
           Create My Name
-        </Link>
+        </CreateNameLink>
       </div>
     </header>
   );

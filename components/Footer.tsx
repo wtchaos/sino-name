@@ -1,3 +1,4 @@
+import { CreateNameLink } from "@/components/CreateNameLink";
 import Link from "next/link";
 import { SealMark } from "@/components/SealMark";
 
@@ -15,7 +16,7 @@ export function Footer() {
         <nav aria-label="Footer navigation">
           <Link href="/methodology">Our Method</Link>
           <Link href="/privacy">Privacy</Link>
-          <Link href="/create">Create My Name</Link>
+          <CreateNameLink>Create My Name</CreateNameLink>
         </nav>
       </div>
       <div className="shell footer-note">
