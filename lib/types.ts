@@ -1,3 +1,5 @@
+import type { ZodiacAnimal } from "@/lib/zodiac";
+
 export const qualities = [
   "calm",
   "wise",
@@ -82,6 +84,7 @@ export type NameResult = {
     sourceId: string | null;
   };
   birthInspiration: string;
+  zodiac?: ZodiacAnimal | null;
   daoistPerspective: string | null;
   buddhistPerspective: string | null;
   practicalReview: {
@@ -105,7 +108,7 @@ export type NameResult = {
 
 export type BirthContext = {
   season: "spring" | "summer" | "autumn" | "winter";
-  zodiac: string | null;
+  zodiac: ZodiacAnimal | null;
   timePeriod: BirthTimePeriod;
   symbolicImages: string[];
   precision: "date_only" | "date_and_period";

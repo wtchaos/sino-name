@@ -1,6 +1,8 @@
 import type { BirthContext, BirthTimePeriod } from "@/lib/types";
 
-const zodiacByBranch: Record<string, string> = {
+import type { ZodiacAnimal } from "@/lib/zodiac";
+
+const zodiacByBranch: Record<string, ZodiacAnimal> = {
   zi: "Rat",
   chou: "Ox",
   yin: "Tiger",
@@ -29,13 +31,14 @@ function getSeason(month: number): BirthContext["season"] {
   return "winter";
 }
 
-function getChineseZodiac(date: Date): string | null {
+export function getChineseZodiac(date: Date): ZodiacAnimal | null {
   try {
-    const formatted = new Intl.DateTimeFormat("en-u-ca-chinese", {
+    const parts = new Intl.DateTimeFormat("en-u-ca-chinese", {
       year: "numeric",
       timeZone: "UTC",
-    }).format(date);
-    const branch = formatted
+    }).formatToParts(date);
+    const yearName = parts.find((part) => String(part.type) === "yearName")?.value ?? "";
+    const branch = yearName
       .toLowerCase()
       .match(/(?:jia|yi|bing|ding|wu|ji|geng|xin|ren|gui)[-\s](zi|chou|yin|mao|chen|si|wu|wei|shen|you|xu|hai)/)?.[1];
     return branch ? zodiacByBranch[branch] : null;

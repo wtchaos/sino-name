@@ -256,7 +256,7 @@ export async function generateName(
   profile: NameProfile,
   userId: string,
 ): Promise<ModelResult> {
-  const targetFullNameLength: 2 | 3 = Math.random() < 0.5 ? 2 : 3;
+  const targetFullNameLength: 2 | 3 = Math.random() < 0.7 ? 3 : 2;
 
   if (
     !process.env.DEEPSEEK_API_KEY &&

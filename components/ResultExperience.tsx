@@ -17,6 +17,7 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { SealMark } from "@/components/SealMark";
+import { zodiacStories } from "@/lib/zodiac";
 import type { NameResult } from "@/lib/types";
 import { readCachedResults, saveCachedResult } from "@/lib/result-cache";
 
@@ -137,6 +138,7 @@ export function ResultExperience({ id }: { id: string }) {
   }
 
   const { result } = state;
+  const zodiac = result.zodiac ? zodiacStories[result.zodiac] : null;
 
   return (
     <main className="result-page">
@@ -239,6 +241,22 @@ export function ResultExperience({ id }: { id: string }) {
             </div>
             <p>{result.birthInspiration}</p>
           </article>
+
+          {zodiac && (
+            <article className="interpretation-block zodiac-block">
+              <div className="result-section-title">
+                <span className="text-icon" lang="zh-Hans" aria-hidden>{zodiac.character}</span>
+                <h2>Your Chinese zodiac · {result.zodiac}</h2>
+              </div>
+              <p><span lang="zh-Hans">{zodiac.character}</span> · {zodiac.pinyin}</p>
+              <p>Your birth date falls in the Year of the {result.zodiac}. We use Chinese New Year as the year boundary, so January and February birthdays may belong to the preceding zodiac year.</p>
+              <h3>A tale from the Great Race</h3>
+              <p>In one popular folk tale, a race across a river decides the order of the twelve zodiac animals.</p>
+              <p>{zodiac.story}</p>
+              <p className="source-label">A retelling of traditional folklore; versions vary. These stories do not predict your personality or future.</p>
+              <a className="text-link" href="https://en.wikipedia.org/wiki/Chinese_zodiac#Great_Race" target="_blank" rel="noreferrer">Read about the Great Race</a>
+            </article>
+          )}
 
           {result.daoistPerspective ? (
             <article className="interpretation-block">

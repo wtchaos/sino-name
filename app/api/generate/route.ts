@@ -1,3 +1,4 @@
+import { buildBirthContext } from "@/lib/birth";
 import { randomUUID } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { generateName } from "@/lib/deepseek";
@@ -108,6 +109,7 @@ export async function POST(request: NextRequest) {
         );
       }
 
+      const zodiac = buildBirthContext(body.profile.birthDate, body.profile.birthTimePeriod).zodiac;
       const profileKey = cacheKey(body.profile);
       const cached = await getCachedResult(profileKey);
       if (cached) {
@@ -121,6 +123,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
           result: {
             ...cached,
+            zodiac,
             originalFirstName: body.profile.firstName,
             originalFamilyName: body.profile.familyName,
           },
@@ -137,6 +140,7 @@ export async function POST(request: NextRequest) {
         originalFirstName: body.profile.firstName,
         originalFamilyName: body.profile.familyName,
         ...generated,
+        zodiac,
       };
 
       await saveResult(result, profileKey);

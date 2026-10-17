@@ -2,10 +2,13 @@ import { z } from "zod";
 import { modelResultSchema } from "@/lib/schema";
 import type { NameResult } from "@/lib/types";
 
+import { zodiacAnimals } from "@/lib/zodiac";
+
 const PREFIX = "nih:result:";
 const LAST_RESULT = "nih:last-result";
 const cachedResultSchema = modelResultSchema.extend({
   id: z.string().uuid(),
+  zodiac: z.enum(zodiacAnimals).nullable().optional(),
   createdAt: z.string().datetime(),
   expiresAt: z.string().datetime(),
   originalFirstName: z.string(),
