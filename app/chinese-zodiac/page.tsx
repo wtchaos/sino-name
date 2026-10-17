@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -14,11 +15,29 @@ export const metadata = cultureMetadata(
 export default function ChineseZodiacPage() {
   return <>
     <Header />
-    <main className="content-page culture-guide">
+    <main className="content-page culture-guide zodiac-guide">
       <header className="content-hero shell">
-        <p>Chinese culture · The zodiac</p>
-        <h1>The Chinese zodiac. Twelve animal stories.</h1>
-        <div className="content-hero-lede"><p>The Chinese zodiac, <span lang="zh-Hans">生肖</span> (shēngxiào), gives each year an animal in a repeating twelve-year cycle. It is one way to explore the cultural world around a name.</p></div>
+        <div className="zodiac-hero-copy">
+          <p className="zodiac-kicker">Chinese culture · The zodiac</p>
+          <h1>Twelve animals.<br />A world of stories.</h1>
+          <div className="content-hero-lede">
+            <p>The Chinese zodiac, <span lang="zh-Hans">生肖</span> (shēngxiào), gives each year an animal in a repeating twelve-year cycle. Discover your animal and the stories that bring the cycle to life.</p>
+          </div>
+          <p className="zodiac-hero-note">From Rat to Pig, every animal has a place in the Great Race.</p>
+          <a className="text-link" href="#twelve-animals">Explore the twelve animals ↓</a>
+        </div>
+        <figure className="zodiac-hero-art">
+          <div className="zodiac-art-frame">
+            <Image
+              src="/images/chinese-zodiac-papercut.webp"
+              alt="Twelve red paper-cut zodiac animals: Rat, Ox, Tiger, Rabbit, Dragon, Snake, Horse, Goat, Monkey, Rooster, Dog, and Pig"
+              fill
+              sizes="(max-width: 800px) 100vw, 52vw"
+              preload
+            />
+          </div>
+          <figcaption>The twelve zodiac animals, in a paper-cut-inspired illustration. AI-generated artwork.</figcaption>
+        </figure>
       </header>
       <div className="culture-article shell">
         <section>
@@ -28,7 +47,7 @@ export default function ChineseZodiacPage() {
           <p>Your SinoName result uses your full birth date to show the animal, its Chinese character, and a short folk tale. This offers cultural context without treating a birth date as a prediction.</p>
           <CreateNameLink className="button button-primary">Discover my name and zodiac</CreateNameLink>
         </section>
-        <section>
+        <section id="twelve-animals">
           <h2>The Great Race: twelve animals in order</h2>
           <p>One popular folk tale explains the order through a race across a river. Each animal finds a different way to reach the far bank. The details and even the figure hosting the race vary between tellings. These are short retellings of folklore, rather than a historical account of how the calendar began.</p>
           <ol className="zodiac-stories">

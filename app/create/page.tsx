@@ -1,3 +1,4 @@
+import { StickyHeader } from "@/components/StickyHeader";
 import { CreatePageGuard } from "@/components/CreatePageGuard";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -29,13 +30,15 @@ export const metadata: Metadata = {
 export default function CreatePage() {
   return (
     <main className="create-page">
-      <header className="create-header shell">
+      <StickyHeader className="create-header-wrap">
+      <div className="create-header shell">
         <Link className="wordmark" href="/" aria-label="SinoName home">
           <SealMark className="wordmark-mark" decorative />
           <span>SinoName</span>
         </Link>
         <p>One natural name, thoughtfully chosen.</p>
-      </header>
+      </div>
+      </StickyHeader>
       <div className="create-shell">
         <aside className="create-aside">
           <p className="aside-chinese" lang="zh-Hans">名</p>

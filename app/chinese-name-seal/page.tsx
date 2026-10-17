@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -14,14 +15,34 @@ export const metadata = cultureMetadata(
 export default function NameSealPage() {
   return <>
     <Header />
-    <main className="content-page culture-guide">
+    <main className="content-page culture-guide seal-guide">
       <header className="content-hero shell">
-        <p>Chinese culture · Name seals</p>
-        <h1>Chinese name seals. A personal mark.</h1>
-        <div className="content-hero-lede"><p>A Chinese name seal brings written characters into a compact visual form. Discover the tradition, then see how your name becomes a digital keepsake.</p></div>
+        <div className="seal-hero-copy">
+          <p className="seal-kicker">Chinese culture · Name seals</p>
+          <h1>Chinese name seals.<br />A personal mark.</h1>
+          <div className="content-hero-lede"><p>A Chinese name seal brings written characters into a compact visual form. Discover the tradition, then see how your name becomes a digital keepsake.</p></div>
+          <p className="seal-hero-note"><span lang="zh-Hans">印章</span> · yìnzhāng · A name, expressed in a mark.</p>
+          <a className="text-link" href="#digital-name-card">See the digital name card ↓</a>
+        </div>
+        <figure className="seal-hero-media">
+          <div className="seal-hero-photo">
+            <Image
+              src="/images/name-seal-workshop.webp"
+              alt="Carved stone name seal beside red seal paste, a brush, and a stamped impression on white paper"
+              fill
+              sizes="(max-width: 800px) 100vw, 50vw"
+              preload
+            />
+          </div>
+          <figcaption>Stone, red seal paste, and a personal impression. AI-generated still life inspired by seal engraving.</figcaption>
+        </figure>
       </header>
       <div className="culture-article shell">
-        <NameCardPreview />
+        <section className="seal-card-example" id="digital-name-card" aria-labelledby="digital-card-title">
+          <h2 id="digital-card-title">Your name, ready to keep.</h2>
+          <p>A digital card brings your Chinese name, pronunciation, and meaning together with a seal-inspired design.</p>
+          <NameCardPreview />
+        </section>
         <section>
           <h2>What is a Chinese name seal?</h2>
           <p>A seal, or <span lang="zh-Hans">印章</span> (yìnzhāng), makes an impression that can carry a name or other inscription. Chinese seal engraving joins the arrangement of characters with the craft of cutting a small surface.</p>

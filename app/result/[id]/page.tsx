@@ -1,3 +1,4 @@
+import { StickyHeader } from "@/components/StickyHeader";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ResultExperience } from "@/components/ResultExperience";
@@ -18,10 +19,14 @@ export default async function ResultPage({
   const { id } = await params;
   return (
     <div className="result-route">
+      <StickyHeader className="result-header">
+      <div className="shell result-header-inner">
       <Link className="result-brand" href="/" aria-label="SinoName home">
         <SealMark decorative />
         <span>SinoName</span>
       </Link>
+      </div>
+      </StickyHeader>
       <ResultExperience id={id} />
     </div>
   );

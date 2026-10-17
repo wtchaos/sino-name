@@ -1,10 +1,11 @@
+import { StickyHeader } from "@/components/StickyHeader";
 import { CreateNameLink } from "@/components/CreateNameLink";
 import Link from "next/link";
 import { SealMark } from "@/components/SealMark";
 
 export function Header() {
   return (
-    <header className="site-header">
+    <StickyHeader className="site-header">
       <div className="shell header-inner">
         <Link className="wordmark" href="/" aria-label="SinoName home">
           <SealMark className="wordmark-mark" decorative />
@@ -19,6 +20,6 @@ export function Header() {
           Create My Name
         </CreateNameLink>
       </div>
-    </header>
+    </StickyHeader>
   );
 }

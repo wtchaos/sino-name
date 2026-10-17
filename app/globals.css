@@ -108,10 +108,7 @@ p {
 }
 
 .site-header {
-  position: relative;
-  z-index: 20;
-  background: color-mix(in oklch, var(--white) 94%, transparent);
-  border-bottom: 1px solid transparent;
+  background: transparent;
 }
 
 .header-inner {
@@ -2350,4 +2347,121 @@ p {
   .methodology-hero-media { grid-row: 1; }
   .methodology-photo { aspect-ratio: 5 / 4; }
   .methodology-photo img { object-position: center 65%; }
+}
+
+/* Zodiac illustration keeps the animal cycle visible alongside the introduction. */
+.zodiac-guide .content-hero {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+  padding-block: clamp(3rem, 6vw, 6rem);
+}
+.zodiac-kicker { color: var(--oxblood); font-weight: 650; margin: 0 0 var(--space-6); }
+.zodiac-guide .content-hero h1 { max-width: 14ch; font-size: clamp(2.75rem, 4.7vw, 4.5rem); line-height: 1.08; margin: 0 0 var(--space-8); }
+.zodiac-guide .content-hero-lede { margin: 0; }
+.zodiac-guide .content-hero-lede p { max-width: 40ch; font-size: clamp(1.1rem, 1.6vw, 1.25rem); }
+.zodiac-hero-note { margin: var(--space-8) 0 var(--space-4); color: var(--muted); max-width: 35ch; }
+.zodiac-hero-art { min-width: 0; margin: 0; }
+.zodiac-art-frame { position: relative; aspect-ratio: 1; }
+.zodiac-art-frame img { object-fit: contain; }
+.zodiac-hero-art figcaption { color: var(--muted); font-size: 0.85rem; margin-top: var(--space-3); max-width: 54ch; }
+#twelve-animals { scroll-margin-top: var(--space-8); }
+@media (max-width: 800px) {
+  .zodiac-guide .content-hero { grid-template-columns: 1fr; gap: var(--space-8); }
+  .zodiac-guide .content-hero h1 { max-width: 16ch; }
+  .zodiac-hero-art { grid-row: 1; }
+  .zodiac-art-frame { max-width: 30rem; margin-inline: auto; }
+}
+
+/* Name-seal guide: show the physical craft before the digital interpretation. */
+.seal-guide .content-hero { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 6vw, 6rem); align-items: center; padding-block: clamp(3rem, 6vw, 6rem); }
+.seal-kicker { color: var(--oxblood); font-weight: 650; margin: 0 0 var(--space-6); }
+.seal-guide .content-hero h1 { max-width: 15ch; margin: 0 0 var(--space-8); font-size: clamp(2.75rem, 4.7vw, 4.5rem); line-height: 1.08; }
+.seal-guide .content-hero-lede { margin: 0; }
+.seal-guide .content-hero-lede p { max-width: 40ch; font-size: clamp(1.1rem, 1.6vw, 1.25rem); }
+.seal-hero-note { margin: var(--space-8) 0 var(--space-4); color: var(--muted); }
+.seal-hero-note [lang] { font-family: var(--font-hanzi); font-size: 1.5rem; color: var(--oxblood); }
+.seal-hero-media { min-width: 0; margin: 0; }
+.seal-hero-photo { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--surface); }
+.seal-hero-photo img { object-fit: cover; }
+.seal-hero-media figcaption { color: var(--muted); font-size: 0.85rem; margin-top: var(--space-3); max-width: 54ch; }
+.seal-guide .seal-card-example { margin-top: 0; scroll-margin-top: var(--space-8); }
+.seal-card-example > p { color: var(--muted); margin-bottom: var(--space-8); }
+@media (max-width: 800px) {
+  .seal-guide .content-hero { grid-template-columns: 1fr; gap: var(--space-8); }
+  .seal-hero-media { grid-row: 1; }
+  .seal-hero-photo { aspect-ratio: 5 / 4; }
+  .seal-hero-photo img { object-position: center 65%; }
+}
+
+/* A shared, animated backdrop for navigation, creation, and result headers. */
+html { scroll-padding-top: 6rem; }
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  isolation: isolate;
+  align-self: start;
+}
+.sticky-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: color-mix(in oklch, var(--white) 82%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(125%);
+  backdrop-filter: blur(18px) saturate(125%);
+  border-bottom: 1px solid var(--hairline);
+  opacity: 0;
+  transition: opacity 320ms var(--ease-out);
+}
+.sticky-header[data-scrolled="true"]::before { opacity: 1; }
+.result-header-inner { min-height: 4.5rem; display: flex; align-items: center; }
+.result-header .result-brand { position: static; }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .sticky-header::before { background: var(--white); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sticky-header::before { transition: none; }
+}
+@media print {
+  .sticky-header { position: static; }
+  .sticky-header::before { display: none; }
+  .result-header-inner { min-height: 0; width: 100%; }
+}
+
+.back-to-top {
+  position: fixed;
+  right: max(1.5rem, env(safe-area-inset-right));
+  bottom: max(1.5rem, env(safe-area-inset-bottom));
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: var(--white);
+  background: var(--oxblood);
+  box-shadow: 0 2px 6px oklch(0.18 0.015 20 / 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.5rem);
+  pointer-events: none;
+  transition: opacity 220ms var(--ease-out), transform 220ms var(--ease-out), background-color 160ms ease, visibility 220ms;
+}
+.back-to-top[data-visible="true"] { opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto; }
+.back-to-top:hover { background: var(--oxblood-deep); }
+.back-to-top:active { transform: translateY(1px); }
+@media (max-width: 640px) {
+  .back-to-top { right: max(1rem, env(safe-area-inset-right)); bottom: max(1rem, env(safe-area-inset-bottom)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top { transition: none; transform: none; }
+}
+@media print {
+  .back-to-top { display: none; }
 }

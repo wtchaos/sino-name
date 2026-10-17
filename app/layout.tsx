@@ -1,3 +1,4 @@
+import { BackToTop } from "@/components/BackToTop";
 import { siteUrl } from "@/lib/site";
 import type { Metadata, Viewport } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
@@ -57,7 +58,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="en" data-scroll-behavior="smooth">
-      <body>{children}</body>
+      <body>
+        {children}
+        <BackToTop />
+      </body>
       {analyticsEnabled && googleAnalyticsId ? (
         <GoogleAnalytics gaId={googleAnalyticsId} />
       ) : null}
