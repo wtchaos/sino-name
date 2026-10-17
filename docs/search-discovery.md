@@ -14,7 +14,7 @@ FAQ markup describes the visible questions; it does not promise Google FAQ rich 
 
 ## Check the deployed site
 
-Set `NEXT_PUBLIC_SITE_URL` to the final HTTPS origin before building and deploying. Then run:
+Set `NEXT_SITE_URL` to the final HTTPS origin before building and deploying. Then run:
 
 ```sh
 npm run check:discovery

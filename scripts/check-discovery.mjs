@@ -1,5 +1,5 @@
 // Read-only checks against a deployment; never fetch personal result URLs.
-const base = new URL(process.argv[2] ?? process.env.NEXT_PUBLIC_SITE_URL ?? "https://sinoname.space");
+const base = new URL(process.argv[2] ?? process.env.NEXT_SITE_URL ?? "https://sinoname.space");
 if (!["http:", "https:"].includes(base.protocol) || base.username || base.password) {
   throw new Error("Pass an http(s) site origin without credentials.");
 }
