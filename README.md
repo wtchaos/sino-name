@@ -102,3 +102,10 @@ if necessary, copy the URL printed by the command into that browser.
 Only local browser result history is removed; server caches and rate limits
 remain unchanged. The cleanup route returns 404 outside development, and the
 command refuses to run with `NODE_ENV=production`.
+
+## Search and AI discovery
+
+Public naming questions, worked examples, and editorial information are available
+at `/faq`, `/chinese-name-examples`, and `/about`. Run `npm run check:discovery`
+after deployment for basic discovery checks. See [search and AI discovery](docs/search-discovery.md)
+for crawler access, Search Console submission, measurement, and content maintenance.

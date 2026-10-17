@@ -1,3 +1,4 @@
+import { StructuredData } from "@/components/StructuredData";
 import { BackToTop } from "@/components/BackToTop";
 import { siteUrl } from "@/lib/site";
 import type { Metadata, Viewport } from "next";
@@ -59,6 +60,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body>
+        <StructuredData data={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "@id": `${siteUrl}/#publisher`,
+          name: "SinoName",
+          url: siteUrl,
+          email: "tchaos.w@gmail.com",
+          publishingPrinciples: `${siteUrl}/about#editorial`,
+        }} />
         {children}
         <BackToTop />
       </body>

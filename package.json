@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "clear": "node scripts/clear-history.mjs"
+    "clear": "node scripts/clear-history.mjs",
+    "check:discovery": "node scripts/check-discovery.mjs"
   },
   "dependencies": {
     "@fontsource-variable/source-sans-3": "^5.2.8",

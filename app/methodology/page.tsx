@@ -123,6 +123,11 @@ export default function MethodologyPage() {
           </div>
         </section>
 
+        <section className="method-resources shell">
+          <h2>See the method in practice.</h2>
+          <p>Compare <Link href="/chinese-name-examples">two- and three-character name examples</Link>, read <Link href="/faq">common naming questions</Link>, and see <Link href="/about#checks">what the automated checks cover</Link>.</p>
+        </section>
+
         <section className="content-cta shell">
           <h2>Ready to meet your name?</h2>
           <p>One complete result, explained in clear English.</p>

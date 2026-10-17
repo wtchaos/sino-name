@@ -17,8 +17,10 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebSite",
+          "@id": `${siteUrl}/#website`,
           name: "SinoName",
           url: siteUrl,
+          publisher: { "@id": `${siteUrl}/#publisher` },
           description: "Personalized Chinese names, digital name seals, and Chinese zodiac stories explained in English.",
           inLanguage: "en",
         }).replace(/</g, "\\u003c") }}
@@ -234,6 +236,15 @@ export default function HomePage() {
           </div>
         </section>
 
+
+        <section className="home-reading shell" aria-labelledby="reading-title">
+          <div><h2 id="reading-title">A little understanding before you choose.</h2><p>Explore real examples and clear answers about Chinese names.</p></div>
+          <nav aria-label="Chinese naming guides">
+            <Link href="/chinese-name-examples">Names, meanings & pronunciation <ArrowRight size={18} aria-hidden /></Link>
+            <Link href="/faq">Common naming questions <ArrowRight size={18} aria-hidden /></Link>
+            <Link href="/about">Our sources & editorial approach <ArrowRight size={18} aria-hidden /></Link>
+          </nav>
+        </section>
 
         <section className="final-cta shell" data-scene="final" data-depth-scene>
           <SealMark
