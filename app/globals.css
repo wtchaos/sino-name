@@ -756,6 +756,10 @@ p {
 }
 
 .footer-note {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
   padding-block: var(--space-4);
   border-top: 1px solid var(--hairline);
   color: var(--muted);
@@ -2267,13 +2271,13 @@ p {
 }
 
 /* Public cultural guides and product examples. */
-.culture-highlights { padding-block: clamp(4rem, 8vw, 7rem); }
-.culture-heading { max-width: 43rem; margin-bottom: var(--space-16); }
-.culture-heading h2 { font-size: clamp(2rem, 4vw, 3.3rem); line-height: 1.1; }
-.culture-heading > p { color: var(--muted); font-size: 1.15rem; }
+.culture-highlights { padding-block: clamp(2rem, 4vw, 3.5rem); }
+.culture-heading { display: grid; grid-template-columns: 1.2fr 1fr; align-items: end; gap: clamp(1.5rem, 6vw, 5rem); margin-bottom: var(--space-8); }
+.culture-heading h2 { margin: 0; max-width: 27ch; font-size: clamp(1.85rem, 3.2vw, 2.65rem); line-height: 1.12; }
+.culture-heading > p { margin: 0; max-width: 44ch; color: var(--muted); font-size: 1.05rem; }
 .culture-feature { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(2rem, 6vw, 5rem); align-items: center; }
-.culture-feature + .culture-feature { margin-top: clamp(3rem, 7vw, 6rem); padding-top: var(--space-12); border-top: 1px solid var(--hairline); }
-.culture-copy h3 { font-size: clamp(1.5rem, 2.5vw, 2rem); line-height: 1.2; }
+.culture-feature + .culture-feature { margin-top: clamp(2rem, 4vw, 3rem); padding-top: var(--space-8); border-top: 1px solid var(--hairline); }
+.culture-copy h3 { margin-bottom: var(--space-3); font-size: clamp(1.5rem, 2.5vw, 2rem); line-height: 1.2; }
 .culture-copy p { max-width: 55ch; color: var(--muted); }
 .name-card-preview { margin: 0; min-width: 0; }
 .preview-card { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding: clamp(1.5rem, 4vw, 3rem); border: 1px solid var(--hairline); background: var(--white); }
@@ -2301,6 +2305,7 @@ p {
 .zodiac-stories p { margin-bottom: 0; }
 .create-cache-status { padding: var(--space-8); color: var(--muted); }
 @media (max-width: 700px) {
+  .culture-heading { grid-template-columns: 1fr; gap: var(--space-3); }
   .culture-feature { grid-template-columns: 1fr; }
   .culture-feature-zodiac .culture-copy { order: 2; }
   .preview-card { gap: 0.75rem; padding: 1.25rem; }
@@ -2410,9 +2415,9 @@ html { scroll-padding-top: 6rem; }
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: color-mix(in oklch, var(--white) 82%, transparent);
-  -webkit-backdrop-filter: blur(18px) saturate(125%);
-  backdrop-filter: blur(18px) saturate(125%);
+  background: color-mix(in oklch, var(--white) 76%, transparent);
+  -webkit-backdrop-filter: blur(12px) saturate(125%);
+  backdrop-filter: blur(12px) saturate(125%);
   border-bottom: 1px solid var(--hairline);
   opacity: 0;
   transition: opacity 320ms var(--ease-out);
@@ -2465,3 +2470,51 @@ html { scroll-padding-top: 6rem; }
 @media print {
   .back-to-top { display: none; }
 }
+
+/* Homepage depth: native scrolling with independent foreground/background layers. */
+.home-page { overflow-x: clip; }
+.home-page .scroll-progress { z-index: 110; }
+.home-page .inside-intro { top: 7rem; }
+.home-seal-scene { position: relative; isolation: isolate; overflow: clip; min-height: clamp(32rem, 78svh, 52rem); display: grid; align-items: center; color: var(--white); background: var(--ink); }
+.home-seal-image { position: absolute; inset: -20% 0; z-index: -2; }
+.home-seal-image img { object-fit: cover; object-position: center 65%; }
+.home-seal-scrim { position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, oklch(0.18 0.015 20 / 0.8), oklch(0.18 0.015 20 / 0.22)); pointer-events: none; }
+.home-seal-copy { padding-block: 5rem; }
+.home-seal-copy h2 { max-width: 12ch; margin: 0 0 var(--space-6); font-size: clamp(3.25rem, 7vw, 6rem); line-height: 1; letter-spacing: -0.025em; }
+.home-seal-copy p { max-width: 30ch; font-size: clamp(1.15rem, 2vw, 1.45rem); }
+.home-seal-copy .text-link { color: var(--white); text-decoration-color: currentColor; }
+.home-seal-copy small { display: block; margin-top: var(--space-8); font-size: 0.8rem; }
+@media (max-width: 900px) {
+  .home-page .inside-intro { position: static; }
+  .home-seal-scene { min-height: 34rem; }
+  .home-seal-image img { object-position: 48% 60%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-page [data-scroll-layer] { translate: none !important; will-change: auto !important; }
+}
+@media print {
+  .home-page [data-scroll-layer] { translate: none !important; }
+  .home-page .scroll-progress { display: none; }
+}
+
+/* Eight distinct naming elements, kept together without a repeating marquee. */
+.culture-ribbon-track { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 0 0.75rem; }
+.culture-ribbon-track > div { gap: 0.5rem; min-width: 0; padding-block: 1.5rem; }
+.culture-ribbon-track span { font-size: clamp(0.85rem, 1.05vw, 1rem); }
+.culture-ribbon-track b { display: inline-block; font-size: clamp(2rem, 3vw, 3rem); }
+.method-depth-glyph { position: absolute; right: -1rem; top: -3rem; font-family: var(--font-hanzi); color: var(--oxblood); opacity: 0.045; font-size: clamp(16rem, 32vw, 30rem); line-height: 1; pointer-events: none; user-select: none; }
+.home-seal-glyph { position: absolute; right: 5%; bottom: 4%; color: var(--white); opacity: 0.18; font-family: var(--font-hanzi); font-size: clamp(10rem, 22vw, 22rem); line-height: 1; pointer-events: none; user-select: none; }
+@media (max-width: 1100px) {
+  .culture-ribbon-track { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .culture-ribbon-track > div { padding-block: 1rem; }
+}
+@media (max-width: 640px) {
+  .culture-ribbon-track > div { flex-direction: column; gap: 0.35rem; }
+  .culture-ribbon-track span { font-size: 0.8rem; }
+  .home-seal-glyph { right: 2%; bottom: 2%; opacity: 0.12; }
+}
+/* Clip the hero's moving seal before it reaches the next section. */
+.home-page .hero { overflow: clip; }
+
+.footer-note a { text-decoration: underline; text-underline-offset: 0.2em; }
+.footer-note a:hover { color: var(--oxblood); }

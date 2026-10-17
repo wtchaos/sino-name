@@ -23,6 +23,7 @@ export function Footer() {
       </div>
       <div className="shell footer-note">
         <p>Cultural and linguistic interpretation, written in clear English.</p>
+        <p>Contact: <a href="mailto:tchaos.w@gmail.com">tchaos.w@gmail.com</a></p>
       </div>
     </footer>
   );

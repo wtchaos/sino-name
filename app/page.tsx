@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { CultureHighlights } from "@/components/CultureHighlights";
 import { siteUrl } from "@/lib/site";
 import { CreateNameLink } from "@/components/CreateNameLink";
@@ -23,10 +24,10 @@ export default function HomePage() {
         }).replace(/</g, "\\u003c") }}
       />
       <Header />
-      <main>
+      <main className="home-page">
         <HomeMotion />
-        <section className="hero shell">
-          <div className="hero-copy">
+        <section className="hero shell" data-depth-scene data-depth-origin="top">
+          <div className="hero-copy" data-scroll-layer="-0.10" data-scroll-limit="70">
             <h1 aria-label="Find a Chinese name that feels like you.">
               <span className="hero-title-line" aria-hidden="true">
                 <span data-hero-line>Find a Chinese</span>
@@ -54,12 +55,14 @@ export default function HomePage() {
           <div
             className="name-specimen"
             aria-label="Example Chinese name"
+            data-scroll-layer="0.16"
+            data-scroll-limit="110"
             data-hero-specimen
           >
             <SealMark
               className="specimen-seal"
               decorative
-              data-parallax="0.9"
+              data-scroll-layer="0.24" data-scroll-limit="140"
             />
             <div className="specimen-content">
               <p className="specimen-label" data-hero-detail>A name shaped with care</p>
@@ -91,22 +94,29 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="culture-ribbon" aria-label="Elements of a Chinese name">
+        <section className="culture-ribbon" aria-label="Elements of a Chinese name" data-depth-scene>
           <div className="culture-ribbon-track shell">
-            <div><span>Sound</span><b lang="zh-Hans">声</b></div>
-            <div><span>Meaning</span><b lang="zh-Hans">意</b></div>
-            <div><span>Rhythm</span><b lang="zh-Hans">韵</b></div>
-            <div><span>Character</span><b lang="zh-Hans">字</b></div>
-            <div><span>Harmony</span><b lang="zh-Hans">和</b></div>
+            <div><span>Sound</span><b lang="zh-Hans" data-scroll-layer="0.035" data-scroll-limit="9">声</b></div>
+            <div><span>Meaning</span><b lang="zh-Hans" data-scroll-layer="-0.035" data-scroll-limit="9">意</b></div>
+            <div><span>Rhythm</span><b lang="zh-Hans" data-scroll-layer="0.035" data-scroll-limit="9">韵</b></div>
+            <div><span>Character</span><b lang="zh-Hans" data-scroll-layer="-0.035" data-scroll-limit="9">字</b></div>
+            <div><span>Harmony</span><b lang="zh-Hans" data-scroll-layer="0.035" data-scroll-limit="9">和</b></div>
+            <div><span>Form</span><b lang="zh-Hans" data-scroll-layer="-0.035" data-scroll-limit="9">形</b></div>
+            <div><span>Origin</span><b lang="zh-Hans" data-scroll-layer="0.035" data-scroll-limit="9">源</b></div>
+            <div><span>Name</span><b lang="zh-Hans" data-scroll-layer="-0.035" data-scroll-limit="9">名</b></div>
           </div>
         </section>
+
+        <CultureHighlights />
 
         <section
           className="method-band"
           aria-labelledby="method-title"
           data-scene="method"
+          data-depth-scene
         >
-          <span className="method-curtain" aria-hidden="true" />
+
+          <span className="method-depth-glyph" lang="zh-Hans" aria-hidden="true" data-scroll-layer="-0.14" data-scroll-axis="x" data-scroll-limit="80">文</span>
           <div className="shell method-band-grid">
             <div className="method-heading">
               <p className="section-kicker">Our method</p>
@@ -131,6 +141,7 @@ export default function HomePage() {
           className="how-section shell"
           id="how-it-works"
           data-scene="steps"
+          data-depth-scene
         >
           <div className="section-heading">
             <p className="section-kicker">Three considered steps</p>
@@ -138,7 +149,7 @@ export default function HomePage() {
           </div>
           <ol className="steps-list">
             <li>
-              <span className="step-number">01</span>
+              <span className="step-number" data-scroll-layer="-0.04" data-scroll-limit="18">01</span>
               <div>
                 <h3>Choose what matters</h3>
                 <p>
@@ -148,7 +159,7 @@ export default function HomePage() {
               </div>
             </li>
             <li>
-              <span className="step-number">02</span>
+              <span className="step-number" data-scroll-layer="0.04" data-scroll-limit="18">02</span>
               <div>
                 <h3>We shape one name</h3>
                 <p>
@@ -158,7 +169,7 @@ export default function HomePage() {
               </div>
             </li>
             <li>
-              <span className="step-number">03</span>
+              <span className="step-number" data-scroll-layer="-0.04" data-scroll-limit="18">03</span>
               <div>
                 <h3>Understand every layer</h3>
                 <p>
@@ -170,9 +181,23 @@ export default function HomePage() {
           </ol>
         </section>
 
-        <section className="inside-section" data-scene="inside">
-          <span className="inside-curtain" aria-hidden="true" />
-          <div className="inside-glyphs" aria-hidden="true" data-parallax="1.35">
+        <section className="home-seal-scene" data-depth-scene aria-labelledby="seal-scene-title">
+          <div className="home-seal-image" data-scroll-layer="0.22" data-scroll-limit="100">
+            <Image src="/images/name-seal-workshop.webp" alt="Carved stone seal and red seal paste on a Chinese calligraphy worktable" fill sizes="100vw" />
+          </div>
+          <div className="home-seal-scrim" aria-hidden="true" />
+          <span className="home-seal-glyph" lang="zh-Hans" aria-hidden="true" data-scroll-layer="0.12" data-scroll-axis="x" data-scroll-limit="65">篆</span>
+          <div className="shell home-seal-copy" data-scroll-layer="-0.08" data-scroll-limit="40">
+            <h2 id="seal-scene-title">The shape<br />of a name.</h2>
+            <p>From a spoken sound to a written character, and a mark you can keep.</p>
+            <Link className="text-link" href="/chinese-name-seal">Explore the art of name seals <ArrowRight size={18} aria-hidden /></Link>
+            <small>AI-generated still life inspired by seal engraving.</small>
+          </div>
+        </section>
+
+        <section className="inside-section" data-scene="inside" data-depth-scene>
+
+          <div className="inside-glyphs" aria-hidden="true" data-scroll-layer="0.18" data-scroll-limit="100">
             <span>字</span><span>韵</span><span>意</span>
           </div>
           <div className="shell inside-grid">
@@ -209,13 +234,12 @@ export default function HomePage() {
           </div>
         </section>
 
-        <CultureHighlights />
 
-        <section className="final-cta shell" data-scene="final">
+        <section className="final-cta shell" data-scene="final" data-depth-scene>
           <SealMark
             className="final-cta-mark"
             decorative
-            data-parallax="0.55"
+            data-scroll-layer="-0.1" data-scroll-limit="45"
           />
           <div>
             <h2>Your Chinese name is waiting to be understood.</h2>
