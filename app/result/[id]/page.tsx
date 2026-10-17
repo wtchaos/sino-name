@@ -4,8 +4,9 @@ import { ResultExperience } from "@/components/ResultExperience";
 import { SealMark } from "@/components/SealMark";
 
 export const metadata: Metadata = {
-  title: "Your Chinese name",
-  description: "Your Chinese name and its cultural story.",
+  title: "Your Chinese Name, Seal & Zodiac Story",
+  description:
+    "Explore your Chinese name, its meaning and pronunciation, your digital name seal, and the folk tale behind your Chinese zodiac animal.",
   robots: { index: false, follow: false },
 };
 

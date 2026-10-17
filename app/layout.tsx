@@ -1,3 +1,4 @@
+import { siteUrl } from "@/lib/site";
 import type { Metadata, Viewport } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "@fontsource-variable/source-sans-3/wght.css";
@@ -12,15 +13,13 @@ const googleAnalyticsId =
     : null;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-  ),
+  metadataBase: new URL(siteUrl),
   title: {
-    default: "Chinese Name Generator with Meaning | SinoName",
+    default: "Chinese Name Generator, Name Seals & Zodiac | SinoName",
     template: "%s | SinoName",
   },
   description:
-    "Create a natural Chinese name shaped by your name and values. Explore its pronunciation, character meanings, poetic imagery, and cultural context in English.",
+    "Discover Chinese culture through a name made for you. Explore its meaning, pronunciation, a digital name seal, and your Chinese zodiac animal and folk tale.",
   applicationName: "SinoName",
   alternates: {
     canonical: "/",
@@ -29,19 +28,19 @@ export const metadata: Metadata = {
     google: "0wDIbMVw2vzXZ2wYVIU_v8hPZyzhxwQe8k9aL-GJ29E",
   },
   openGraph: {
-    title: "Chinese Name Generator with Meaning | SinoName",
+    title: "Chinese Name Generator, Name Seals & Zodiac | SinoName",
     description:
-      "Create one natural, personalized Chinese name and discover its pronunciation, character meanings, poetic imagery, and cultural context.",
+      "Discover Chinese culture through a name made for you. Explore its meaning, pronunciation, a digital name seal, and your Chinese zodiac animal and folk tale.",
     url: "/",
     siteName: "SinoName",
     locale: "en_US",
     type: "website",
   },
   twitter: {
-    card: "summary",
-    title: "Chinese Name Generator with Meaning | SinoName",
+    card: "summary_large_image",
+    title: "Chinese Name Generator, Name Seals & Zodiac | SinoName",
     description:
-      "Create one natural Chinese name with pronunciation, character meanings, poetic imagery, and cultural context.",
+      "Discover Chinese culture through a name made for you. Explore its meaning, pronunciation, a digital name seal, and your Chinese zodiac animal and folk tale.",
   },
   robots: { index: true, follow: true },
 };

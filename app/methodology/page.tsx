@@ -1,3 +1,5 @@
+import Image from "next/image";
+import Link from "next/link";
 import { CreateNameLink } from "@/components/CreateNameLink";
 import type { Metadata } from "next";
 import { ArrowRight, Check, X } from "lucide-react";
@@ -5,30 +7,65 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 
 export const metadata: Metadata = {
-  title: "Our naming method",
+  title: "Chinese Naming Traditions & Cultural Meanings",
   description:
-    "Learn how SinoName chooses natural Chinese names by balancing surname, pronunciation, character meaning, modern usage, and cultural context.",
+    "Explore Chinese naming culture: surnames, character meanings, pronunciation, and poetic symbolism. Learn how SinoName creates a natural name for you.",
   alternates: { canonical: "/methodology" },
+  openGraph: {
+    title: "Chinese Naming Traditions & Cultural Meanings | SinoName",
+    description: "Explore Chinese naming culture: surnames, character meanings, pronunciation, and poetic symbolism. Learn how SinoName creates a natural name for you.",
+    url: "/methodology",
+    siteName: "SinoName",
+    locale: "en_US",
+    type: "website",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "SinoName: Chinese names, digital seals, and zodiac stories" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/twitter-image"],
+    title: "Chinese Naming Traditions & Cultural Meanings | SinoName",
+    description: "Explore Chinese naming culture: surnames, character meanings, pronunciation, and poetic symbolism. Learn how SinoName creates a natural name for you.",
+  },
 };
 
 export default function MethodologyPage() {
   return (
     <>
       <Header />
-      <main className="content-page">
-        <header className="content-hero shell">
-          <p>Our naming method</p>
-          <h1>Language first. Symbolism second.</h1>
-          <div className="content-hero-lede">
-            <p>
-              A Chinese name is not a row of positive dictionary definitions. It
-              is a whole: surname, rhythm, tone, written form, contemporary usage,
-              and the impression it leaves when spoken aloud.
-            </p>
+      <main className="content-page methodology-page">
+        <header className="content-hero shell" id="about-names">
+          <div className="methodology-hero-copy">
+            <p className="methodology-kicker">Our naming method</p>
+            <h1>Language first.<br />Symbolism second.</h1>
+            <div className="content-hero-lede">
+              <p>
+                A Chinese name is a whole: surname, rhythm, meaning, and the
+                impression it leaves when spoken aloud. We start with the
+                language, then explore the culture around it.
+              </p>
+            </div>
+            <dl className="methodology-name-example" aria-label="Example name: 林知远, Lín Zhīyuǎn">
+              <div><dt lang="zh-Hans">林</dt><dd>Lín <span>Surname</span></dd></div>
+              <div><dt lang="zh-Hans">知</dt><dd>Zhī <span>Understanding</span></dd></div>
+              <div><dt lang="zh-Hans">远</dt><dd>yuǎn <span>Far-reaching</span></dd></div>
+            </dl>
+            <Link className="text-link" href="/chinese-name-seal">Discover the art behind a name seal <ArrowRight size={17} aria-hidden /></Link>
           </div>
+          <figure className="methodology-hero-media">
+            <div className="methodology-photo">
+              <Image
+                src="/images/name-seal-workshop.webp"
+                alt="Stone name seal, red seal paste, and a calligraphy brush on a white worktable"
+                fill
+                sizes="(max-width: 800px) 100vw, 48vw"
+                preload
+              />
+            </div>
+            <figcaption>A name takes shape in language, writing, and a personal mark. AI-generated still life.</figcaption>
+          </figure>
         </header>
 
-        <section className="method-principles shell" id="about-names">
+        <section className="method-principles shell">
           <article>
             <span>1</span>
             <h2>It should sound like a real name</h2>
@@ -69,7 +106,7 @@ export default function MethodologyPage() {
                 <ul>
                   <li>Seasonal imagery</li>
                   <li>A broad time-of-day atmosphere</li>
-                  <li>Traditional zodiac context where available</li>
+                  <li><Link href="/chinese-zodiac">Traditional zodiac context and folk tales</Link></li>
                   <li>The tone of the poetic explanation</li>
                 </ul>
               </div>

@@ -5,15 +5,29 @@ import { NameWizard } from "@/components/NameWizard";
 import { SealMark } from "@/components/SealMark";
 
 export const metadata: Metadata = {
-  title: "Create your Chinese name",
+  title: "Create Your Chinese Name & Digital Seal",
   description:
-    "Create a personalized Chinese name in about two minutes. Receive its pronunciation, character meanings, poetic imagery, and cultural interpretation.",
+    "Create a personalized Chinese name with meanings and pronunciation. Get a digital name seal and discover your Chinese zodiac animal and its folk tale.",
   alternates: { canonical: "/create" },
+  openGraph: {
+    title: "Create Your Chinese Name & Digital Seal | SinoName",
+    description: "Create a personalized Chinese name with meanings and pronunciation. Get a digital name seal and discover your Chinese zodiac animal and its folk tale.",
+    url: "/create",
+    siteName: "SinoName",
+    locale: "en_US",
+    type: "website",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "SinoName: Chinese names, digital seals, and zodiac stories" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/twitter-image"],
+    title: "Create Your Chinese Name & Digital Seal | SinoName",
+    description: "Create a personalized Chinese name with meanings and pronunciation. Get a digital name seal and discover your Chinese zodiac animal and its folk tale.",
+  },
 };
 
 export default function CreatePage() {
   return (
-    <CreatePageGuard>
     <main className="create-page">
       <header className="create-header shell">
         <Link className="wordmark" href="/" aria-label="SinoName home">
@@ -29,12 +43,20 @@ export default function CreatePage() {
             “A name should feel at home in the language—and still feel like you.”
           </blockquote>
           <p className="aside-note">
-            Most questions take one tap. Your first complete result is free.
+            Create a Chinese name with character meanings and pronunciation,
+            a downloadable name card and digital seal, and your Chinese zodiac story.
+            Your first complete result is free.
+          </p>
+          <p className="create-culture-links">
+            <Link href="/chinese-name-seal">Chinese name seals</Link>
+            <span aria-hidden="true"> · </span>
+            <Link href="/chinese-zodiac">Chinese zodiac stories</Link>
           </p>
         </aside>
-        <NameWizard />
+        <CreatePageGuard>
+          <NameWizard />
+        </CreatePageGuard>
       </div>
     </main>
-    </CreatePageGuard>
   );
 }

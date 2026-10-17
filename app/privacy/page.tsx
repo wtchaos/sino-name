@@ -3,10 +3,25 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 
 export const metadata: Metadata = {
-  title: "Privacy",
+  title: "Privacy & Your Personal Information",
   description:
-    "Learn what information SinoName uses to create your Chinese name, how long results are retained, and how anonymous abuse protection works.",
+    "See how SinoName uses your name and birth date, stores generated Chinese names for 30 days, and protects your privacy without requiring an account.",
   alternates: { canonical: "/privacy" },
+  openGraph: {
+    title: "Privacy & Your Personal Information | SinoName",
+    description: "See how SinoName uses your name and birth date, stores generated Chinese names for 30 days, and protects your privacy without requiring an account.",
+    url: "/privacy",
+    siteName: "SinoName",
+    locale: "en_US",
+    type: "website",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "SinoName: Chinese names, digital seals, and zodiac stories" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/twitter-image"],
+    title: "Privacy & Your Personal Information | SinoName",
+    description: "See how SinoName uses your name and birth date, stores generated Chinese names for 30 days, and protects your privacy without requiring an account.",
+  },
 };
 
 export default function PrivacyPage() {

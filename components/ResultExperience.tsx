@@ -150,9 +150,16 @@ export function ResultExperience({ id }: { id: string }) {
         </div>
         <p className="result-pinyin">{result.pinyin}</p>
         <p className="result-pronunciation">Say it like: {result.pronunciation}</p>
+        {zodiac && (
+          <p className="result-zodiac" aria-label={`Chinese zodiac: ${result.zodiac}`}>
+            <span>Chinese zodiac</span>
+            <span lang="zh-Hans">{zodiac.character}</span>
+            <strong>Year of the {result.zodiac}</strong>
+          </p>
+        )}
         <p className="result-meaning-label">What your name means</p>
         <p className="result-one-line">“{result.oneLineMeaning}”</p>
-        <div className="result-meaning-summary">
+        <div className={`result-meaning-summary${result.characters.length === 2 ? " result-meaning-summary--two" : ""}`}>
           {result.characters.map((item) => (
             <div key={item.character}>
               <span className="meaning-glyph" lang="zh-Hans">
@@ -254,7 +261,7 @@ export function ResultExperience({ id }: { id: string }) {
               <p>In one popular folk tale, a race across a river decides the order of the twelve zodiac animals.</p>
               <p>{zodiac.story}</p>
               <p className="source-label">A retelling of traditional folklore; versions vary. These stories do not predict your personality or future.</p>
-              <a className="text-link" href="https://en.wikipedia.org/wiki/Chinese_zodiac#Great_Race" target="_blank" rel="noreferrer">Read about the Great Race</a>
+              <a className="text-link" href="/chinese-zodiac">Explore all twelve zodiac animals</a>
             </article>
           )}
 

@@ -15,6 +15,8 @@ export function Footer() {
         </div>
         <nav aria-label="Footer navigation">
           <Link href="/methodology">Our Method</Link>
+          <Link href="/chinese-name-seal">Chinese Name Seals</Link>
+          <Link href="/chinese-zodiac">Chinese Zodiac</Link>
           <Link href="/privacy">Privacy</Link>
           <CreateNameLink>Create My Name</CreateNameLink>
         </nav>

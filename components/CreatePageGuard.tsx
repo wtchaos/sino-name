@@ -28,7 +28,7 @@ export function CreatePageGuard({ children }: { children: ReactNode }) {
   }, [router]);
 
   if (!ready) {
-    return <main className="result-loading" role="status">Checking your saved name…</main>;
+    return <div className="create-cache-status" role="status">Checking your saved name…</div>;
   }
 
   return children;

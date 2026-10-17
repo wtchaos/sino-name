@@ -1,3 +1,5 @@
+import { CultureHighlights } from "@/components/CultureHighlights";
+import { siteUrl } from "@/lib/site";
 import { CreateNameLink } from "@/components/CreateNameLink";
 import { ArrowRight, BookOpen, Check, Languages, Volume2 } from "lucide-react";
 import Link from "next/link";
@@ -9,6 +11,17 @@ import { SealMark } from "@/components/SealMark";
 export default function HomePage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "SinoName",
+          url: siteUrl,
+          description: "Personalized Chinese names, digital name seals, and Chinese zodiac stories explained in English.",
+          inLanguage: "en",
+        }).replace(/</g, "\\u003c") }}
+      />
       <Header />
       <main>
         <HomeMotion />
@@ -195,6 +208,8 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+
+        <CultureHighlights />
 
         <section className="final-cta shell" data-scene="final">
           <SealMark
