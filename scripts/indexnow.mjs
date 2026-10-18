@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 
 const config = JSON.parse(await readFile(new URL("../lib/indexnow.json", import.meta.url), "utf8"));
 const paths = JSON.parse(await readFile(new URL("../lib/public-paths.json", import.meta.url), "utf8"));
@@ -6,6 +6,9 @@ const origin = new URL(config.origin).origin;
 const args = process.argv.slice(2);
 const submit = args.includes("--submit");
 const selected = args.filter(arg => arg !== "--submit");
+if (submit && selected.length === 0) {
+  throw new Error("Specify only added, updated, or deleted public paths, for example: npm run indexnow -- --submit /create /privacy. Do not resubmit the whole sitemap by default.");
+}
 if (selected.some(path => !paths.includes(path === "/" ? "" : path))) {
   throw new Error("Use public page paths from lib/public-paths.json, such as / or /create. Personal result URLs are excluded.");
 }
@@ -36,4 +39,10 @@ if (!submit) {
     const reasons = { 400: "Invalid request", 403: "Key verification failed", 422: "Host or URL mismatch", 429: "Rate limited; retry later" };
     throw new Error(`IndexNow HTTP ${response.status}: ${reasons[response.status] ?? "Submission failed"}`);
   }
+  const submittedAt = new Date().toISOString();
+  const directory = new URL("../.indexnow/", import.meta.url);
+  await mkdir(directory, { recursive: true });
+  const receipt = new URL(`${submittedAt.replace(/[:.]/g, "-")}.json`, directory);
+  await writeFile(receipt, JSON.stringify({ submittedAt, endpoint: "https://api.indexnow.org/indexnow", status: response.status, host: payload.host, keyLocation, urlList }, null, 2) + "\n");
+  console.log(`Receipt saved to ${receipt.pathname}. Verify receipt of these URLs in Bing Webmaster Tools → IndexNow.`);
 }

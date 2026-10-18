@@ -119,20 +119,32 @@ is `https://www.sinoname.space`; keep it aligned with `NEXT_SITE_URL`.
 ```bash
 # Preview all public URLs without sending a request
 npm run indexnow
-# After deploying the key file, submit all public pages once
-npm run indexnow -- --submit
-# After later content changes, submit only changed paths
+# After deploying changes, submit only newly added or updated paths
+npm run indexnow -- --submit /create /privacy
+# For later content changes
 npm run indexnow -- --submit /
 npm run indexnow -- --submit /chinese-name-examples /methodology
 ```
 
 The script verifies the deployed key before sending URLs to IndexNow's shared
 endpoint. HTTP 200 means received; 202 means received with key validation pending.
+Each accepted submission saves a local receipt under `.indexnow/` (excluded from
+Git). Confirm submitted URLs in Bing Webmaster Tools → IndexNow; an HTTP receipt
+alone is not evidence of indexing. No-argument `--submit` is rejected to prevent
+unnecessary sitemap-wide submissions. The script is manually triggered, not a
+build hook: run it only after the changed production pages are deployed. Do not
+submit historical unchanged URLs when first enabling IndexNow. For a removed
+public URL, notify it while its path is still in `lib/public-paths.json`, then
+remove it from that list; the production URL must already return 404 or 410.
 Neither guarantees crawling, indexing, or ranking. Submit when content changes,
 not on a daily schedule. The sitemap and script share `lib/public-paths.json`;
 personal result, API, and development URLs cannot be submitted through this script.
 The verification key is intentionally served publicly and is not a Bing account
 credential. No Bing Webmaster API credential is required.
+
+Content revision dates are maintained in `lib/content-updates.json`. Update only
+entries whose page content actually changed; unknown dates are omitted from the
+sitemap. Never regenerate all dates just because a build ran.
 
 ### Generator funnel in GA4
 

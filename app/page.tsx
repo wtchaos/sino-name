@@ -8,6 +8,11 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { HomeMotion } from "@/components/HomeMotion";
 import { SealMark } from "@/components/SealMark";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default function HomePage() {
   return (

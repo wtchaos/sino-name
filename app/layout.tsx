@@ -23,9 +23,6 @@ export const metadata: Metadata = {
   description:
     "Discover Chinese culture through a name made for you. Explore its meaning, pronunciation, a digital name seal, and your Chinese zodiac animal and folk tale.",
   applicationName: "SinoName",
-  alternates: {
-    canonical: "/",
-  },
   verification: {
     google: "0wDIbMVw2vzXZ2wYVIU_v8hPZyzhxwQe8k9aL-GJ29E",
   },
@@ -44,7 +41,6 @@ export const metadata: Metadata = {
     description:
       "Discover Chinese culture through a name made for you. Explore its meaning, pronunciation, a digital name seal, and your Chinese zodiac animal and folk tale.",
   },
-  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {

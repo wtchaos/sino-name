@@ -25,6 +25,8 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPage() {
+  const providerHost = new URL(process.env.DEEPSEEK_BASE_URL ?? "https://api.deepseek.com").hostname;
+  const usesDeepSeek = providerHost === "api.deepseek.com";
   return (
     <>
       <Header />
@@ -32,8 +34,18 @@ export default function PrivacyPage() {
         <header>
           <p>Privacy</p>
           <h1>Only the details needed to shape your name.</h1>
-          <p className="legal-updated">MVP privacy summary · October 16, 2026</p>
+          <p className="legal-updated">Updated October 18, 2026</p>
         </header>
+
+        <section>
+          <h2>Who operates this service</h2>
+          <p>
+            This service is operated under the SinoName project name. For privacy
+            questions or requests about a saved result, contact{" "}
+            <a href="mailto:tchaos.w@gmail.com">tchaos.w@gmail.com</a>.
+            Please do not include your full birth date in an email.
+          </p>
+        </section>
 
         <section>
           <h2>What you provide</h2>
@@ -78,10 +90,16 @@ export default function PrivacyPage() {
         <section>
           <h2>AI processing</h2>
           <p>
-            Name preferences and derived birth context are sent to the configured AI
-            provider to create the result. The production implementation should link
-            to the final provider terms and name the project operator before launch.
+            Your entered name, naming preferences, and derived birth context are
+            sent to {usesDeepSeek ? "DeepSeek" : `the AI service at ${providerHost}`} to
+            create your result. The provider receives the request data to process
+            it; SinoName’s 30-day result retention does not describe the provider’s
+            own retention policy.
           </p>
+          {usesDeepSeek && <p>
+            Read <a href="https://cdn.deepseek.com/policies/en-US/deepseek-privacy-policy.html">DeepSeek’s privacy policy</a>{" "}
+            and <a href="https://cdn.deepseek.com/policies/en-US/deepseek-terms-of-use.html">terms of use</a>.
+          </p>}
         </section>
 
         <section>
