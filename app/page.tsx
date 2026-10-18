@@ -30,6 +30,7 @@ export default function HomePage() {
         <HomeMotion />
         <section className="hero shell" data-depth-scene data-depth-origin="top">
           <div className="hero-copy" data-scroll-layer="-0.10" data-scroll-limit="70">
+            <p className="section-kicker">Free Chinese Name Generator</p>
             <h1 aria-label="Find a Chinese name that feels like you.">
               <span className="hero-title-line" aria-hidden="true">
                 <span data-hero-line>Find a Chinese</span>
@@ -42,9 +43,9 @@ export default function HomePage() {
               </span>
             </h1>
             <p className="hero-lede" data-hero-detail>
-              We create one natural Chinese name shaped by your original name,
-              the qualities you value, and the season you were born—then explain
-              every layer in clear English.
+              Create a personalized Chinese name based on your original name and
+              the qualities you value. Get Chinese characters, pinyin,
+              pronunciation guidance, and meanings explained in clear English.
             </p>
             <div className="hero-actions" data-hero-detail>
               <CreateNameLink className="button button-primary button-large">
