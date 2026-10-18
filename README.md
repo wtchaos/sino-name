@@ -110,7 +110,32 @@ at `/faq`, `/chinese-name-examples`, and `/about`. Run `npm run check:discovery`
 after deployment for basic discovery checks. See [search and AI discovery](docs/search-discovery.md)
 for crawler access, Search Console submission, measurement, and content maintenance.
 
+### IndexNow notifications
+
+The verification file in `public/` and its matching key in `lib/indexnow.json`
+must be deployed before the first submission. The configured production origin
+is `https://www.sinoname.space`; keep it aligned with `NEXT_SITE_URL`.
+
+```bash
+# Preview all public URLs without sending a request
+npm run indexnow
+# After deploying the key file, submit all public pages once
+npm run indexnow -- --submit
+# After later content changes, submit only changed paths
+npm run indexnow -- --submit /
+npm run indexnow -- --submit /chinese-name-examples /methodology
+```
+
+The script verifies the deployed key before sending URLs to IndexNow's shared
+endpoint. HTTP 200 means received; 202 means received with key validation pending.
+Neither guarantees crawling, indexing, or ranking. Submit when content changes,
+not on a daily schedule. The sitemap and script share `lib/public-paths.json`;
+personal result, API, and development URLs cannot be submitted through this script.
+The verification key is intentionally served publicly and is not a Bing account
+credential. No Bing Webmaster API credential is required.
+
 ### Generator funnel in GA4
+
 
 With `GOOGLE_ANALYTICS_ID` configured in production, the `/create` wizard queues these events even when the Google script is still loading:
 
