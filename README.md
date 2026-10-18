@@ -109,3 +109,22 @@ Public naming questions, worked examples, and editorial information are availabl
 at `/faq`, `/chinese-name-examples`, and `/about`. Run `npm run check:discovery`
 after deployment for basic discovery checks. See [search and AI discovery](docs/search-discovery.md)
 for crawler access, Search Console submission, measurement, and content maintenance.
+
+### Generator funnel in GA4
+
+With `GOOGLE_ANALYTICS_ID` configured in production, the `/create` wizard queues these events even when the Google script is still loading:
+
+| Event | Meaning |
+| --- | --- |
+| `generator_open` | Wizard opened |
+| `generator_step_view` | Step displayed (`step_number`: 1, 2, or 3) |
+| `generator_step_complete` | Validated Continue, or submitted step 3 |
+| `generator_submit` | Generation request started after verification |
+| `generator_success` | A result was received |
+| `generator_error` | Request failed (no raw error text is sent) |
+
+Step views fire once per step per mounted wizard; returning to an earlier step does not inflate views. Completions/submissions count attempts, including retries. Events include `funnel_name: name_generator`, but never include profile values, names, birth dates, or generated content.
+
+In GA4, use **Explore → Funnel exploration** with sequential conditions:
+`generator_open` → `generator_step_view` with `step_number = 2` → `generator_step_view` with `step_number = 3` → `generator_submit` → `generator_success`.
+Register `step_number` as an event-scoped custom dimension to use it in explorations. For a completion funnel, use `generator_step_complete` and its step number instead. Confirm new events in Realtime after deployment; these events cannot reconstruct historical step progress. Browser blockers and analytics consent settings can reduce measured counts.

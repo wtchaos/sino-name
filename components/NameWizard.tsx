@@ -8,7 +8,8 @@ import {
   LoaderCircle,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { FormEvent, useCallback, useRef, useState } from "react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { trackGeneratorEvent } from "@/lib/analytics";
 import { BirthDatePicker } from "@/components/BirthDatePicker";
 import { saveCachedResult } from "@/lib/result-cache";
 import type { NameResult } from "@/lib/types";
@@ -88,6 +89,14 @@ export function NameWizard() {
     !turnstileToken &&
     !submitting;
 
+  const viewedSteps = useRef(new Set<number>());
+  useEffect(() => {
+    if (viewedSteps.current.has(step)) return;
+    viewedSteps.current.add(step);
+    if (step === 1) trackGeneratorEvent("generator_open");
+    trackGeneratorEvent("generator_step_view", { step_number: step });
+  }, [step]);
+
   function update<K extends keyof NameProfile>(key: K, value: NameProfile[K]) {
     setProfile((current) => ({ ...current, [key]: value }));
     setError("");
@@ -128,6 +137,7 @@ export function NameWizard() {
   function moveTo(nextStep: number) {
     if (nextStep > step && !validateCurrentStep()) return;
     setError("");
+    if (nextStep > step) trackGeneratorEvent("generator_step_complete", { step_number: step });
     setStep(nextStep);
     requestAnimationFrame(() => headingRef.current?.focus());
   }
@@ -144,6 +154,8 @@ export function NameWizard() {
       return;
     }
 
+    trackGeneratorEvent("generator_step_complete", { step_number: 3 });
+    trackGeneratorEvent("generator_submit");
     setSubmitting(true);
     setError("");
     try {
@@ -175,9 +187,11 @@ export function NameWizard() {
         throw new Error(generationBody.error ?? "We couldn’t create your name.");
       }
 
+      trackGeneratorEvent("generator_success");
       saveCachedResult(generationBody.result);
       router.push(`/result/${generationBody.result.id}`);
     } catch (caught) {
+      trackGeneratorEvent("generator_error");
       setError(
         caught instanceof Error
           ? caught.message
@@ -413,23 +427,25 @@ export function NameWizard() {
             </label>
           </div>
 
-          <div className="privacy-note">
-            <strong>Your details stay minimal.</strong>
-            <p>
-              No account is required. We do not retain your English name or full
-              birth date long-term. Your result remains available in this browser
-              for 30 days.
-            </p>
-          </div>
 
-          <Turnstile onToken={handleToken} resetKey={challengeKey} />
+
         </section>
       ) : null}
+
+      {/* Prepare once while the user fills the form, but only present the
+          security check at the final step. Keep it mounted on back/next. */}
+      <div hidden={step !== 3}>
+        <Turnstile onToken={handleToken} resetKey={challengeKey} />
+      </div>
 
       {error ? (
         <div className="form-error" role="alert">
           {error}
         </div>
+      ) : null}
+
+      {step === 3 && submitting ? (
+        <p className="field-help" role="status">We’re creating your name and checking its meaning and pronunciation. This may take a little while. Please keep this page open.</p>
       ) : null}
 
       <div className="wizard-actions">
@@ -449,7 +465,7 @@ export function NameWizard() {
           type="button"
           className={`button button-primary${step === 3 ? " button-large" : ""}`}
           disabled={submitting || verificationPending}
-          aria-busy={step === 3 && (submitting || verificationPending)}
+          aria-busy={submitting}
           onClick={() => {
             if (step < 3) {
               moveTo(step + 1);
@@ -465,8 +481,7 @@ export function NameWizard() {
             </>
           ) : verificationPending ? (
             <>
-              <LoaderCircle className="spin" aria-hidden size={19} />
-              Securing your request…
+              Complete security check above
             </>
           ) : step === 3 ? (
             <>

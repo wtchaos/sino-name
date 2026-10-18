@@ -1,7 +1,7 @@
 "use client";
 
 import Script from "next/script";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 declare global {
   interface Window {
@@ -11,7 +11,11 @@ declare global {
         options: {
           sitekey: string;
           action: string;
-          appearance: "interaction-only";
+          appearance: "always";
+          size: "flexible";
+          "refresh-expired": "auto";
+          "before-interactive-callback": () => void;
+          "timeout-callback": () => void;
           callback: (token: string) => void;
           "expired-callback": () => void;
           "error-callback": () => void;
@@ -30,10 +34,11 @@ export function Turnstile({
   onToken: (token: string) => void;
   resetKey: number;
 }) {
+  const [status, setStatus] = useState<"loading" | "interactive" | "verified" | "error">("loading");
+  const [attempt, setAttempt] = useState(0);
   const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | undefined>(undefined);
-  const previousResetKey = useRef(resetKey);
 
   useEffect(() => {
     if (!siteKey) {
@@ -41,6 +46,10 @@ export function Turnstile({
       return;
     }
 
+    setStatus("loading");
+    let settled = false;
+    const fail = () => { settled = true; setStatus("error"); onToken(""); };
+    const timeout = window.setTimeout(() => { if (!settled) fail(); }, 20000);
     let interval: number | undefined;
     const render = () => {
       if (!containerRef.current || !window.turnstile) return false;
@@ -48,10 +57,14 @@ export function Turnstile({
       widgetIdRef.current = window.turnstile.render(containerRef.current, {
         sitekey: siteKey,
         action: "generate_name",
-        appearance: "interaction-only",
-        callback: onToken,
-        "expired-callback": () => onToken(""),
-        "error-callback": () => onToken(""),
+        appearance: "always",
+        size: "flexible",
+        "refresh-expired": "auto",
+        callback: (token) => { settled = true; setStatus("verified"); onToken(token); },
+        "before-interactive-callback": () => { settled = true; setStatus("interactive"); },
+        "timeout-callback": fail,
+        "expired-callback": () => { setStatus("loading"); onToken(""); },
+        "error-callback": fail,
       });
       return true;
     };
@@ -66,30 +79,40 @@ export function Turnstile({
     }
     return () => {
       if (interval !== undefined) window.clearInterval(interval);
+      window.clearTimeout(timeout);
       const widgetId = widgetIdRef.current;
       widgetIdRef.current = undefined;
       if (widgetId && window.turnstile) {
         window.turnstile.remove(widgetId);
       }
     };
-  }, [onToken, siteKey]);
+  }, [onToken, siteKey, attempt, resetKey]);
 
-  useEffect(() => {
-    if (resetKey === previousResetKey.current) return;
-    previousResetKey.current = resetKey;
-    const widgetId = widgetIdRef.current;
-    if (widgetId && window.turnstile) window.turnstile.reset(widgetId);
-  }, [resetKey]);
+  if (!siteKey) return null;
 
   return (
-    <>
+    <div className="verification-panel">
+      <strong>Quick security check</strong>
+      <p role="status">
+        {status === "verified" ? "Verified. You’re ready to create your name."
+          : status === "error" ? "Verification couldn’t finish. Please retry. If it still won’t load, check your connection or content blocker."
+          : status === "interactive" ? "Please complete the check below to continue."
+          : "Preparing your security check. If asked, confirm you’re human below before creating your name."}
+      </p>
       {siteKey ? (
         <Script
-          src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+          key={attempt}
+          src={attempt === 0
+            ? "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+            : `https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&retry=${attempt}`}
           strategy="afterInteractive"
+          onError={() => { setStatus("error"); onToken(""); }}
         />
       ) : null}
-      <div ref={containerRef} className="turnstile-container" aria-live="polite" />
-    </>
+      <div ref={containerRef} className="turnstile-container" />
+      {status === "error" ? (
+        <button type="button" className="button button-secondary" onClick={() => { onToken(""); setAttempt((value) => value + 1); }}>Retry verification</button>
+      ) : null}
+    </div>
   );
 }

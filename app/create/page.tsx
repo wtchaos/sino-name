@@ -55,6 +55,14 @@ export default function CreatePage() {
             <span aria-hidden="true"> · </span>
             <Link href="/chinese-zodiac">Chinese zodiac stories</Link>
           </p>
+          <div className="privacy-note">
+            <strong>Your details stay minimal.</strong>
+            <p>
+              No account is required. We do not retain your English name or full
+              birth date long-term. Your result remains available in this browser
+              for 30 days.
+            </p>
+          </div>
         </aside>
         <CreatePageGuard>
           <NameWizard />
